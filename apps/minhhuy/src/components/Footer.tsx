@@ -13,7 +13,7 @@ import dayjs from '@/utils/dayjs';
 function LastUpdate() {
   return (
     <a
-      href="https://github.com/"
+      href="https://github.com/tiroxuki0"
       target="_blank"
       rel="noreferrer nofollow"
       className={clsx('hover:underline')}
@@ -118,7 +118,7 @@ function FooterDescription() {
       <ul className={clsx('-ml-2 flex gap-1')}>
         <li>
           <a
-            href="https://github.com"
+            href="https://github.com/tiroxuki0"
             target="_blank"
             rel="noreferrer nofollow"
             className={clsx('flex h-9 w-9 items-center justify-center')}
