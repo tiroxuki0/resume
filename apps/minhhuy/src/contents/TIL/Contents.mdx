@@ -1,0 +1,442 @@
+import TIL from '@/components/mdx/TIL';
+
+<TIL.Items date="2024-04-02">
+
+  <TIL.Item>
+    
+    ## Next.js 15 Server Actions Improvements
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>nextjs</TIL.ItemTag>
+      <TIL.ItemTag>react</TIL.ItemTag>
+      <TIL.ItemTag>forms</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Next.js 15 introduced significant improvements to Server Actions with:
+
+    ```jsx
+    // Progress indicators for long-running actions
+    export default function Form() {
+      const [isPending, startTransition] = useTransition();
+
+      async function submitForm(formData) {
+        startTransition(async () => {
+          await saveData(formData);
+        });
+      }
+
+      return (
+        <form action={submitForm}>
+          <input name="name" />
+          <button type="submit" disabled={isPending}>
+            {isPending ? 'Saving...' : 'Save'}
+          </button>
+        </form>
+      );
+    }
+    ```
+
+    Other improvements include optimistic updates, client-side validation integration, and better error handling through the built-in useFormStatus hook.
+
+    [Next.js Server Actions](https://nextjs.org/docs/app/api-reference/functions/server-actions)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-04-01">
+
+  <TIL.Item>
+    
+    ## Shadcn UI + Next.js 15 Integration
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>shadcn</TIL.ItemTag>
+      <TIL.ItemTag>nextjs</TIL.ItemTag>
+      <TIL.ItemTag>ui</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Shadcn UI now works seamlessly with Next.js 15 Server Components, making form handling even cleaner:
+
+    ```jsx
+    // app/contact/page.jsx
+    import { Button } from "@/components/ui/button";
+    import { Input } from "@/components/ui/input";
+    import { Textarea } from "@/components/ui/textarea";
+
+    async function submitForm(formData) {
+      'use server';
+      // Process form data
+    }
+
+    export default function ContactPage() {
+      return (
+        <form action={submitForm} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="name">Name</label>
+            <Input id="name" name="name" required />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="message">Message</label>
+            <Textarea id="message" name="message" required />
+          </div>
+          <Button type="submit">Send Message</Button>
+        </form>
+      );
+    }
+    ```
+
+    The new CLI tool also makes components installation faster:
+
+    ```bash
+    npx shadcn-ui@latest add form dialog toast
+    ```
+
+    [Shadcn UI Documentation](https://ui.shadcn.com/docs)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-03-30">
+
+  <TIL.Item>
+    
+    ## Next.js 15 View Transitions API
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>nextjs</TIL.ItemTag>
+      <TIL.ItemTag>framer-motion</TIL.ItemTag>
+      <TIL.ItemTag>animation</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Next.js 15 now supports the View Transitions API combined with Framer Motion for enhanced animations:
+
+    ```jsx
+    import { motion } from 'framer-motion';
+    import Link from 'next/link';
+
+    export default function Header() {
+      return (
+        <header>
+          <nav>
+            <Link href="/about" useViewTransition>
+              <motion.span
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                About
+              </motion.span>
+            </Link>
+          </nav>
+        </header>
+      );
+    }
+    ```
+
+    The combination of View Transitions and Framer Motion gives you the best of both worlds: smooth page transitions and fine-grained component animations.
+
+    [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-03-25">
+
+  <TIL.Item>
+    
+    ## React Query v5 with Next.js
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>react-query</TIL.ItemTag>
+      <TIL.ItemTag>nextjs</TIL.ItemTag>
+      <TIL.ItemTag>data-fetching</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    React Query v5 works exceptionally well with Next.js App Router for client components:
+
+    ```jsx
+    'use client';
+
+    import { useQuery } from '@tanstack/react-query';
+
+    export default function Products() {
+      const { data, isPending, error } = useQuery({
+        queryKey: ['products'],
+        queryFn: async () => {
+          const res = await fetch('/api/products');
+          if (!res.ok) throw new Error('Network response error');
+          return res.json();
+        },
+      });
+
+      if (isPending) return <div>Loading...</div>;
+      if (error) return <div>Error: {error.message}</div>;
+
+      return (
+        <div className="grid grid-cols-3 gap-4">
+          {data.map(product => (
+            <div key={product.id} className="border p-4 rounded">
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    ```
+
+    Key improvements in v5 include smaller bundle size, better TypeScript support, and simplified APIs.
+
+    [React Query Documentation](https://tanstack.com/query/latest)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-03-20">
+
+  <TIL.Item>
+    
+    ## Framer Motion + Shadcn UI Integration
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>framer-motion</TIL.ItemTag>
+      <TIL.ItemTag>shadcn</TIL.ItemTag>
+      <TIL.ItemTag>animation</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Combining Framer Motion with Shadcn UI components creates beautifully animated interfaces:
+
+    ```jsx
+    import { motion, AnimatePresence } from 'framer-motion';
+    import {
+      Accordion,
+      AccordionContent,
+      AccordionItem,
+      AccordionTrigger,
+    } from "@/components/ui/accordion";
+
+    export default function AnimatedAccordion() {
+      return (
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>
+              <motion.span whileHover={{ x: 5 }}>
+                Item One
+              </motion.span>
+            </AccordionTrigger>
+            <AnimatePresence>
+              <AccordionContent>
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Content for item one
+                </motion.div>
+              </AccordionContent>
+            </AnimatePresence>
+          </AccordionItem>
+        </Accordion>
+      );
+    }
+    ```
+
+    This approach keeps Shadcn's elegant styling while adding Framer Motion's powerful animation capabilities.
+
+    [Framer Motion Documentation](https://www.framer.com/motion/)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-03-15">
+
+  <TIL.Item>
+    
+    ## Advanced Framer Motion Gestures
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>framer-motion</TIL.ItemTag>
+      <TIL.ItemTag>animation</TIL.ItemTag>
+      <TIL.ItemTag>interaction</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Framer Motion's gesture detection provides intuitive user interactions:
+
+    ```jsx
+    import { motion } from 'framer-motion';
+    import { useState } from 'react';
+
+    export default function DraggableCard() {
+      const [position, setPosition] = useState({ x: 0, y: 0 });
+      const [rotation, setRotation] = useState(0);
+
+      return (
+        <motion.div
+          drag
+          dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
+          whileDrag={{ scale: 1.1, boxShadow: "0px 10px 25px rgba(0,0,0,0.1)" }}
+          dragElastic={0.7}
+          onDrag={(_, info) => {
+            // Calculate rotation based on horizontal drag
+            setRotation(info.offset.x * 0.1);
+          }}
+          animate={{
+            x: position.x,
+            y: position.y,
+            rotate: rotation
+          }}
+          className="w-64 h-80 bg-white rounded-lg p-6 cursor-grab"
+          onDragEnd={(_, info) => {
+            setPosition({
+              x: position.x + info.offset.x,
+              y: position.y + info.offset.y
+            });
+          }}
+        >
+          <h3 className="text-lg font-bold">Drag Me</h3>
+          <p>Rotation: {Math.round(rotation)}°</p>
+        </motion.div>
+      );
+    }
+    ```
+
+    This example creates a draggable card with physics-based elasticity and rotation based on drag direction.
+
+    [Framer Motion Gestures](https://www.framer.com/motion/gestures/)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-03-05">
+
+  <TIL.Item>
+    
+    ## React Query Server-Side Rendering with Next.js
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>react-query</TIL.ItemTag>
+      <TIL.ItemTag>nextjs</TIL.ItemTag>
+      <TIL.ItemTag>ssr</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Hydrate React Query cache from server-fetched data in Next.js for optimal performance:
+
+    ```jsx
+    // app/providers.jsx
+    'use client';
+
+    import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+    import { useState } from 'react';
+
+    export default function Providers({ children, dehydratedState }) {
+      const [queryClient] = useState(() => new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000,
+          },
+        },
+      }));
+
+      return (
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      );
+    }
+
+    // app/page.jsx
+    import Providers from './providers';
+    import ProductList from '@/components/ProductList';
+
+    export default async function Page() {
+      // Fetch data server-side
+      const products = await fetch('https://api.example.com/products')
+        .then(res => res.json());
+
+      return (
+        <Providers>
+          <ProductList initialData={products} />
+        </Providers>
+      );
+    }
+    ```
+
+    This pattern prevents unnecessary client-side fetching on initial load while maintaining React Query's caching capabilities.
+
+    [React Query SSR](https://tanstack.com/query/latest/docs/react/guides/ssr)
+
+  </TIL.Item>
+
+</TIL.Items>
+
+<TIL.Items date="2024-02-20">
+
+  <TIL.Item>
+    
+    ## Shadcn UI Theming System
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>shadcn</TIL.ItemTag>
+      <TIL.ItemTag>tailwind</TIL.ItemTag>
+      <TIL.ItemTag>theming</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Shadcn UI provides a powerful theming system with CSS variables and Tailwind:
+
+    ```jsx
+    // app/globals.css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    @layer base {
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+        --primary: 221.2 83.2% 53.3%;
+        --primary-foreground: 210 40% 98%;
+      }
+
+      .dark {
+        --background: 222.2 84% 4.9%;
+        --foreground: 210 40% 98%;
+        --primary: 217.2 91.2% 59.8%;
+        --primary-foreground: 222.2 47.4% 11.2%;
+      }
+    }
+
+    // theme-toggle.jsx
+    'use client';
+
+    import { useTheme } from 'next-themes';
+    import { Button } from '@/components/ui/button';
+    import { Moon, Sun } from 'lucide-react';
+
+    export function ThemeToggle() {
+      const { theme, setTheme } = useTheme();
+
+      return (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        >
+          {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+        </Button>
+      );
+    }
+    ```
+
+    This approach makes it easy to create custom themed components that respect both light and dark mode preferences.
+
+    [Shadcn UI Theming](https://ui.shadcn.com/docs/theming)
+
+  </TIL.Item>
+
+</TIL.Items>
