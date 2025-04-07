@@ -22,7 +22,7 @@ export default async function handler(
       const type = z.nativeEnum(ShareType).parse(req.body.type);
       const currentShares = await getSharesBy(slug, sessionId);
 
-      if (currentShares < MAX_SHARES_PER_SESSION) {
+      /* if (currentShares < MAX_SHARES_PER_SESSION) {
         await setShare({
           slug,
           contentType,
@@ -34,7 +34,16 @@ export default async function handler(
         res.status(200).json({ message: 'Success' });
       } else {
         res.status(403).json({ message: 'Max limit reached' });
-      }
+      } */
+      await setShare({
+        slug,
+        contentType,
+        contentTitle,
+        sessionId,
+        type,
+      });
+
+      res.status(200).json({ message: 'Success' });
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

@@ -21,7 +21,7 @@ export default async function handler(
       const contentTitle = z.string().parse(req.body.contentTitle);
       const currentViews = await getViewsBy(slug, sessionId);
 
-      if (currentViews < MAX_VIEWS_PER_SESSION) {
+      /*   if (currentViews < MAX_VIEWS_PER_SESSION) {
         await setView({
           slug,
           contentType,
@@ -32,7 +32,15 @@ export default async function handler(
         res.status(200).json({ message: 'Success' });
       } else {
         res.status(403).json({ message: 'Max limit reached' });
-      }
+      } */
+      await setView({
+        slug,
+        contentType,
+        contentTitle,
+        sessionId,
+      });
+
+      res.status(200).json({ message: 'Success' });
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

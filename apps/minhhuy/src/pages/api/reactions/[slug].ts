@@ -28,7 +28,7 @@ export default async function handler(
       const reactionsDetailUser = await getReactionsBy(slug, sessionId);
       const currentCount = reactionsDetailUser[type];
 
-      if (currentCount < MAX_REACTIONS_PER_SESSION) {
+      /* if (currentCount < MAX_REACTIONS_PER_SESSION) {
         // ensure that the count is not 0 and has not exceeded the maximum limit
         const quota = Math.min(
           Math.max(1, count),
@@ -48,7 +48,24 @@ export default async function handler(
         res.status(200).json({ message: 'Success' });
       } else {
         res.status(403).json({ message: 'Max limit reached' });
-      }
+      } */
+      // ensure that the count is not 0 and has not exceeded the maximum limit
+      const quota = Math.min(
+        Math.max(1, count),
+        MAX_REACTIONS_PER_SESSION - currentCount
+      );
+
+      await setReaction({
+        slug,
+        contentType,
+        contentTitle,
+        sessionId,
+        type,
+        count: quota,
+        section,
+      });
+
+      res.status(200).json({ message: 'Success' });
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

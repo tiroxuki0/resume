@@ -4,7 +4,7 @@ import { m } from 'framer-motion';
 const animation = {
   hide: { pathLength: 0, opacity: 0 },
   show: (i) => {
-    const delay = 0.8 + i * 0.15;
+    const delay = 0.3 + i * 0.15;
     return {
       pathLength: 1,
       opacity: 1,

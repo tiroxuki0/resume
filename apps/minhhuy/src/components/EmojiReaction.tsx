@@ -70,12 +70,6 @@ function EmojiReaction({
   disabledImage,
   onClick = () => {},
 }: EmojiReactionProps) {
-  console.log(
-    '🚀 ~ animatedImage:',
-    animatedImage,
-    defaultImage,
-    disabledImage
-  );
   const [history, setHistory] = useState<Array<AnimationValue>>([]);
   const [src, setSrc] = useState<string>(
     disabled ? disabledImage : defaultImage

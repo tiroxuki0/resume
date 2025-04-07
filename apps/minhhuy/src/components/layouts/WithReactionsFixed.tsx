@@ -8,9 +8,9 @@ function WithReactionsFixed(props: ReactionsProps) {
   return (
     <div
       className={clsx(
-        'pointer-events-none fixed bottom-8 right-8 z-[902]',
+        'fixed bottom-8 right-8 z-[902] max-md:bottom-[10px] max-md:right-[10px]',
         'lg:bottom-8',
-        'w-[360px] px-4',
+        'w-[360px]',
         'sm:w-[420px] sm:px-0'
       )}
     >
