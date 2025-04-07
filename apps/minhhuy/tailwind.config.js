@@ -11,6 +11,9 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      screens: {
+        xs: '480px',
+      },
       fontFamily: {
         sans: ['var(--font-sans, "")', ...defaultTheme.fontFamily.sans],
         mono: ['var(--font-mono, "")', ...defaultTheme.fontFamily.mono],
