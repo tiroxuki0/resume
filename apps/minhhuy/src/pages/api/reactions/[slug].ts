@@ -50,10 +50,7 @@ export default async function handler(
         res.status(403).json({ message: 'Max limit reached' });
       } */
       // ensure that the count is not 0 and has not exceeded the maximum limit
-      const quota = Math.min(
-        Math.max(1, count),
-        MAX_REACTIONS_PER_SESSION - currentCount
-      );
+      const quota = count;
 
       await setReaction({
         slug,
