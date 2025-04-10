@@ -1,15 +1,781 @@
 import clsx from 'clsx';
 import { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 import { SectionButton } from '@/components/sections/SectionButton';
 import SectionContent from '@/components/sections/SectionContent';
 import SectionTitle from '@/components/sections/SectionTitle';
 import AppWindow from '@/components/wireframes/AppWindow';
 
+// Định nghĩa kiểu dự án (mở rộng)
+type ProjectType =
+  | 'wmember'
+  | 'gstore'
+  | 'wstore'
+  | 'wmember-admin'
+  | 'gstore-admin'
+  | 'wstore-seller'
+  | 'wstore-admin';
+
+// Dữ liệu dự án (bổ sung thêm các dự án admin/seller)
+const projectData = {
+  wmember: {
+    title: 'WMember.io',
+    fullTitle: 'WMember.io - Community Platform',
+    description:
+      'Community development platform with membership management and engagement tools.',
+    subtitle: 'Community Platform',
+    period: '2022 - Present',
+    role: 'Frontend Developer',
+    url: 'https://wmember.io',
+    color: 'purple',
+    secondColor: 'indigo',
+    accentColor: 'pink',
+    summary: [
+      '<span class="font-semibold">Led</span> development of a comprehensive platform for community development and membership management with modern UX.',
+      '<span class="font-semibold">Architected</span> the front-end infrastructure with focus on performance and scalability while <span class="font-semibold">implementing</span> real-time WebSocket capabilities for interactive user experiences.',
+    ],
+    techStack: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'TailwindCSS',
+      'Framer Motion',
+      'Shadcn UI',
+      'React Query',
+      'Zustand',
+      'Socket.io',
+    ],
+    features: [
+      'Community engagement tools with real-time notifications',
+      'Advanced member management system',
+      'Content sharing platform with rich-media support',
+      'Real-time WebSocket chat system',
+      'Analytics dashboard for community leaders',
+    ],
+    contributions: [
+      'Designed and built the WebSocket-based chat system',
+      'Optimized SEO using Next.js SSR/SSG strategies',
+      'Implemented code splitting and lazy loading for faster page loads',
+      'Created custom hooks for shared business logic',
+      'Developed automated testing suite with Jest and Cypress',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+  },
+  'wmember-admin': {
+    title: 'WMember Admin',
+    fullTitle: 'WMember Admin - Dashboard',
+    description:
+      'Administrator control panel for the WMember community platform with advanced management capabilities.',
+    subtitle: 'Admin Dashboard',
+    period: '2022 - Present',
+    role: 'Frontend Developer',
+    color: 'fuchsia', // Different color from main product
+    secondColor: 'violet',
+    accentColor: 'purple',
+    summary: [
+      '<span class="font-semibold">Developed</span> a powerful admin dashboard for comprehensive control over the WMember community platform.',
+      '<span class="font-semibold">Designed</span> intuitive interfaces for complex data management while <span class="font-semibold">implementing</span> real-time monitoring and analytics for platform health.',
+    ],
+    techStack: [
+      'Vite',
+      'React',
+      'TypeScript',
+      'TailwindCSS',
+      'Tanstack Table',
+      'Recharts',
+      'React Hook Form',
+      'Zod',
+      'React Query',
+    ],
+    features: [
+      'Comprehensive user management and moderation',
+      'Real-time analytics dashboard with filters',
+      'Content moderation tools with approval workflows',
+      'Subscription and billing management',
+      'Admin permission controls with audit logging',
+    ],
+    contributions: [
+      'Built role-based access control system',
+      'Implemented real-time admin notifications',
+      'Created user management interfaces with bulk actions',
+      'Developed analytics dashboard with customizable reports',
+      'Integrated with payment providers for subscription management',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect width="18" height="18" x="3" y="3" rx="2" />
+        <path d="M3 9h18" />
+        <path d="M9 21V9" />
+      </svg>
+    ),
+  },
+  gstore: {
+    title: 'G-Store.ai',
+    fullTitle: 'G-Store.ai - Tech Solutions',
+    description:
+      'Technology solutions and financial management platform with smart analytics.',
+    subtitle: 'Tech Solutions',
+    period: '2021 - 2023',
+    role: 'Frontend Developer',
+    url: 'https://g-store.ai',
+    color: 'blue',
+    secondColor: 'cyan',
+    accentColor: 'indigo',
+    summary: [
+      '<span class="font-semibold">Developed</span> a technology solutions and financial management platform with intelligent analytics and modern UI.',
+      '<span class="font-semibold">Designed</span> the front-end architecture with real-time data visualization while <span class="font-semibold">optimizing</span> performance for complex financial calculations and reports.',
+    ],
+    techStack: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'TailwindCSS',
+      'Material UI',
+      'Redux',
+      'React Query',
+      'D3.js',
+      'Socket.io',
+    ],
+    features: [
+      'Financial management with real-time currency conversion',
+      'Interactive data visualization dashboard',
+      'WebSocket-powered real-time analytics',
+      'Business intelligence reporting system',
+      'Customizable workflow automation tools',
+    ],
+    contributions: [
+      'Created responsive data visualization components',
+      'Improved application performance with SSR/SSG',
+      'Implemented WebSocket integration for real-time updates',
+      'Optimized image loading and processing for reports',
+      'Built drag-and-drop workflow automation interface',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
+    ),
+  },
+  'gstore-admin': {
+    title: 'G-Store Admin',
+    fullTitle: 'G-Store Admin - Management Console',
+    description:
+      'Powerful management console for G-Store.ai with comprehensive control over financial data and analytics.',
+    subtitle: 'Management Console',
+    period: '2021 - 2023',
+    role: 'Frontend Developer',
+    color: 'sky', // Different color from main product
+    secondColor: 'blue',
+    accentColor: 'indigo',
+    summary: [
+      '<span class="font-semibold">Built</span> an advanced management console for G-Store.ai with comprehensive financial controls and analytics.',
+      '<span class="font-semibold">Engineered</span> robust data visualization components while <span class="font-semibold">integrating</span> complex filtering and reporting capabilities.',
+    ],
+    techStack: [
+      'Vite',
+      'React',
+      'TypeScript',
+      'Material UI',
+      'Redux Toolkit',
+      'D3.js',
+      'React Query',
+      'React Hook Form',
+      'Vitest',
+    ],
+    features: [
+      'Financial reporting dashboard with export functionality',
+      'User access management with role-based permissions',
+      'Advanced business analytics tools with drill-down capabilities',
+      'Workflow configuration and automation tools',
+      'System health monitoring and alerts',
+    ],
+    contributions: [
+      'Developed advanced data visualization components',
+      'Created Excel/PDF export functionality for reports',
+      'Implemented role-based access control system',
+      'Built workflow automation designer interface',
+      'Optimized performance for large datasets',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+      </svg>
+    ),
+  },
+  wstore: {
+    title: 'WStore.vn',
+    fullTitle: 'WStore.vn - E-commerce Platform',
+    description:
+      'Vietnamese e-commerce marketplace with modern shopping experience and multi-vendor capabilities.',
+    subtitle: 'E-commerce Platform',
+    period: '2020 - 2022',
+    role: 'Frontend Developer',
+    url: 'https://wstore.vn',
+    color: 'green',
+    secondColor: 'teal',
+    accentColor: 'emerald',
+    summary: [
+      '<span class="font-semibold">Built</span> a modern Vietnamese e-commerce marketplace with smooth UX and comprehensive vendor management features.',
+      '<span class="font-semibold">Collaborated</span> with backend developers to integrate payment systems while <span class="font-semibold">enhancing</span> the search system with advanced filtering and product recommendation algorithms.',
+    ],
+    techStack: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'TailwindCSS',
+      'Bootstrap',
+      'Framer Motion',
+      'React Query',
+      'Zustand',
+      'WebP/AVIF',
+    ],
+    features: [
+      'Multi-vendor marketplace with seller dashboards',
+      'Vietnamese payment gateway integrations',
+      'Responsive product showcase with image galleries',
+      'Advanced search with faceted navigation',
+      'Real-time inventory management system',
+    ],
+    contributions: [
+      'Architected product catalog system with filterable attributes',
+      'Implemented WebSocket for real-time inventory updates',
+      'Optimized image loading with Next.js Image component',
+      'Designed responsive UI for all device types',
+      'Built advanced SEO system with SSR/SSG capabilities',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+        <path d="M3 6h18" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+    ),
+  },
+  'wstore-seller': {
+    title: 'WStore Seller',
+    fullTitle: 'WStore Seller - Vendor Portal',
+    description:
+      'Vendor portal for WStore.vn allowing sellers to manage products, orders, and sales analytics.',
+    subtitle: 'Seller Portal',
+    period: '2020 - 2022',
+    role: 'Frontend Developer',
+    color: 'lime', // Different color from main product
+    secondColor: 'emerald',
+    accentColor: 'green',
+    summary: [
+      '<span class="font-semibold">Built</span> an intuitive seller portal for WStore.vn vendors to manage their store operations efficiently.',
+      '<span class="font-semibold">Designed</span> dashboards for tracking sales performance while <span class="font-semibold">creating</span> streamlined interfaces for product and order management.',
+    ],
+    techStack: [
+      'Vite',
+      'React',
+      'TypeScript',
+      'TailwindCSS',
+      'Chart.js',
+      'React Hook Form',
+      'React Query',
+      'Zustand',
+      'React Dropzone',
+    ],
+    features: [
+      'Product management with batch operations',
+      'Order fulfillment and status tracking',
+      'Sales analytics with performance insights',
+      'Inventory management with stock alerts',
+      'Marketing campaign tools with performance tracking',
+    ],
+    contributions: [
+      'Developed product management interface with image uploading',
+      'Created sales analytics dashboard with filters',
+      'Built inventory management system with alerts',
+      'Implemented order fulfillment workflow',
+      'Designed promotional tools for sellers',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M12 2a2 2 0 0 0-2 2v8l-4 4" />
+        <path d="M19 10a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-10Z" />
+      </svg>
+    ),
+  },
+  'wstore-admin': {
+    title: 'WStore Admin',
+    fullTitle: 'WStore Admin - Control Panel',
+    description:
+      'Administrative control panel for WStore.vn e-commerce platform with comprehensive management tools.',
+    subtitle: 'Admin Panel',
+    period: '2020 - 2022',
+    role: 'Frontend Developer',
+    color: 'lime', // Different color from main product
+    secondColor: 'emerald',
+    accentColor: 'green',
+    summary: [
+      '<span class="font-semibold">Developed</span> a comprehensive control panel for the WStore.vn e-commerce platform with robust management tools.',
+      '<span class="font-semibold">Implemented</span> order processing workflows and <span class="font-semibold">created</span> interfaces for managing products, vendors, and promotions.',
+    ],
+    techStack: [
+      'Vite',
+      'React',
+      'TypeScript',
+      'Ant Design',
+      'Zustand',
+      'React Query',
+      'Apex Charts',
+      'React Hook Form',
+      'Testing Library',
+    ],
+    features: [
+      'Product catalog management with bulk operations',
+      'Order processing system with status tracking',
+      'Vendor approval and management workflow',
+      'Comprehensive report generation',
+      'Promotion and discount management',
+    ],
+    contributions: [
+      'Built product management interfaces with bulk editing',
+      'Developed order processing pipeline and tracking',
+      'Created vendor approval workflow and verification',
+      'Implemented promotion rule engine',
+      'Designed dashboard with key performance indicators',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+        <path d="M13 5v14" />
+      </svg>
+    ),
+  },
+};
+
+// Advanced Techniques Card Component
+function AdvancedTechniquesCard({ color = 'purple', isAdmin = false }) {
+  const secondColor =
+    color === 'purple' ? 'indigo' : color === 'blue' ? 'cyan' : 'teal';
+
+  // Chọn nội dung hiển thị dựa vào loại ứng dụng
+  const techniques = isAdmin ? (
+    // Admin techniques content
+    <>
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+        <span className="font-medium">Optimized</span> application performance
+        with code splitting, lazy loading, and component virtualization.
+      </p>
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+        <span className="font-medium">Implemented</span> efficient state
+        management with global stores and context-based caching solutions.
+      </p>
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+        <span className="font-medium">Developed</span> responsive designs with
+        advanced CSS techniques and optimized rendering strategies.
+      </p>
+    </>
+  ) : (
+    // Main app techniques content
+    <>
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+        <span className="font-medium">Implemented</span> performance
+        optimizations including SSR/SSG rendering strategies for optimal SEO and
+        faster page loads.
+      </p>
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+        <span className="font-medium">Optimized</span> core web vitals through
+        code splitting, lazy loading, and advanced caching techniques.
+      </p>
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+        <span className="font-medium">Developed</span> responsive images with
+        automatic optimization and WebP format conversion.
+      </p>
+    </>
+  );
+
+  // Danh sách các tag kỹ thuật dựa vào loại ứng dụng
+  const techTags = isAdmin
+    ? [
+        'Code Splitting',
+        'Lazy Loading',
+        'Virtualization',
+        'State Management',
+        'Bundle Optimization',
+      ]
+    : [
+        'SSR/SSG',
+        'Code Splitting',
+        'Lazy Loading',
+        'Image Optimization',
+        'Caching',
+      ];
+
+  return (
+    <div
+      className={`rounded-lg bg-gradient-to-r p-5 from-${color}-50/80 to-${secondColor}-50/80 border shadow-sm border-${color}-100/60 dark:from-${color}-900/20 dark:to-${secondColor}-900/20 dark:border-${color}-800/30 mb-6 backdrop-blur-sm`}
+    >
+      <h3
+        className={`mb-3 flex items-center text-${color}-700 dark:text-${color}-400 font-semibold`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="mr-2 h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+        Advanced Techniques
+      </h3>
+
+      <div className="space-y-3">{techniques}</div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {techTags.map((tech) => (
+          <span
+            key={tech}
+            className={`inline-flex items-center rounded-full bg-${color}-100/80 px-2.5 py-0.5 text-xs font-medium text-${color}-800 dark:bg-${color}-900/50 dark:text-${color}-300`}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Visit Site Button Component
+function VisitSiteButton({ url, color = 'purple' }) {
+  const secondColor =
+    color === 'purple' ? 'indigo' : color === 'blue' ? 'cyan' : 'teal';
+
+  if (!url) return <></>;
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center rounded-lg bg-gradient-to-r px-4 py-2 from-${color}-600 to-${secondColor}-600 font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:from-${color}-700 hover:to-${secondColor}-700 hover:scale-[1.02] dark:shadow-${color}-900/20`}
+    >
+      <span>Visit Site</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="ml-2 h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+        />
+      </svg>
+    </a>
+  );
+}
+
+// Section for tech stack, features, and contributions
+function ProjectSection({ title, items, color, icon }) {
+  return (
+    <div
+      className={`rounded-lg border border-${color}-100/80 bg-white/70 p-5 shadow-sm transition-all duration-300 hover:shadow-md dark:border-${color}-800/20 dark:bg-gray-800/40`}
+    >
+      <h3
+        className={`mb-3 flex items-center font-semibold text-gray-800 dark:text-gray-200`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={`mr-2 h-5 w-5 text-${color}-500`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          {icon}
+        </svg>
+        {title}
+      </h3>
+
+      {Array.isArray(items) ? (
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          {items.map((item) => (
+            <li key={item} className="flex items-start">
+              <span
+                className={`mr-2 mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-${color}-100 p-[3px] text-xs text-${color}-700 dark:bg-${color}-900/40 dark:text-${color}-300`}
+              >
+                <ArrowRight size={12} />
+              </span>
+              <span className="text-sm">{item}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="flex flex-wrap gap-2">
+          {items.map((tech: any) => (
+            <span
+              key={tech}
+              className={`rounded-full border border-${color}-200 bg-white px-3 py-1.5 text-sm font-medium text-${color}-700 shadow-sm transition-all duration-200 hover:scale-105 hover:border-${color}-300 hover:shadow-md dark:border-${color}-800/40 dark:bg-gray-800 dark:text-${color}-300`}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Project Detail Component
+function ProjectDetail({ project }) {
+  const {
+    color,
+    secondColor,
+    accentColor,
+    title,
+    subtitle,
+    period,
+    summary,
+    techStack,
+    features,
+    contributions,
+    role,
+    url,
+  } = project;
+
+  return (
+    <div
+      className={`relative overflow-hidden rounded-lg bg-gradient-to-br from-white to-${color}-50 p-6 dark:from-gray-800 dark:to-${color}-900/20`}
+    >
+      {/* Background decorative elements */}
+      <div
+        className={`absolute right-0 top-0 -mr-10 -mt-10 h-40 w-40 rounded-full bg-${color}-100 opacity-50 blur-3xl dark:bg-${color}-700 dark:opacity-10`}
+      ></div>
+      <div
+        className={`absolute bottom-0 left-0 -mb-12 -ml-12 h-40 w-40 rounded-full bg-${secondColor}-100 opacity-50 blur-3xl dark:bg-${secondColor}-700 dark:opacity-10`}
+      ></div>
+      <div
+        className={`absolute left-1/3 top-1/2 -ml-12 -mt-12 h-24 w-24 rounded-full bg-${accentColor}-100 opacity-30 blur-2xl dark:bg-${accentColor}-700 dark:opacity-10`}
+      ></div>
+
+      {/* Header */}
+      <div className="relative mb-6 flex items-center">
+        <div
+          className={`mr-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-${color}-500 to-${secondColor}-600 text-white shadow-lg shadow-${color}-500/20 dark:shadow-${color}-800/30`}
+        >
+          <span className="text-xl font-bold">{title[0]}</span>
+        </div>
+        <div>
+          <h2
+            className={`bg-gradient-to-r from-${color}-600 to-${secondColor}-600 bg-clip-text text-2xl font-bold text-transparent dark:from-${color}-400 dark:to-${secondColor}-400`}
+          >
+            {title}
+          </h2>
+          <p
+            className={`text-sm font-medium text-${color}-500 dark:text-${color}-400`}
+          >
+            {subtitle}
+          </p>
+        </div>
+        <div className="ml-auto">
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-medium text-${secondColor}-700 dark:text-${secondColor}-300`}
+          >
+            {period}
+          </span>
+        </div>
+      </div>
+
+      {/* Summary */}
+      <div
+        className={`mb-6 rounded-lg border border-${color}-100/80 bg-white/60 p-5 text-base leading-relaxed text-gray-700 backdrop-blur-sm dark:border-${color}-800/20 dark:bg-gray-800/40 dark:text-gray-300`}
+      >
+        {summary.map((paragraph, idx) => (
+          <p
+            key={idx}
+            className={idx !== summary.length - 1 ? 'mb-3' : ''}
+            dangerouslySetInnerHTML={{ __html: paragraph }}
+          />
+        ))}
+      </div>
+
+      {/* Tech Stack */}
+      <div className="mb-6">
+        <h3 className="mb-3 flex items-center font-semibold text-gray-800 dark:text-gray-200">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={`mr-2 h-5 w-5 text-${color}-500`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+            />
+          </svg>
+          Tech Stack
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {techStack.map((tech: any) => (
+            <span
+              key={tech}
+              className={`rounded-full border border-${color}-200 bg-white px-3 py-1.5 text-sm font-medium text-${color}-700 shadow-sm transition-all duration-200 hover:scale-105 hover:border-${color}-300 hover:shadow-md dark:border-${color}-800/40 dark:bg-gray-800 dark:text-${color}-300`}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Features and Contributions */}
+      <div className="mb-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <ProjectSection
+          title="Key Features"
+          items={features}
+          color={color}
+          icon={
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          }
+        />
+
+        <ProjectSection
+          title="My Contributions"
+          items={contributions}
+          color={color}
+          icon={
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          }
+        />
+      </div>
+
+      {/* Advanced Techniques */}
+      <AdvancedTechniquesCard
+        color={color}
+        isAdmin={
+          project.title.includes('Admin') || project.title.includes('Seller')
+        }
+      />
+
+      {/* Footer */}
+      <div className="mt-6 flex items-center justify-between">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="font-medium">Role:</span> {role}
+        </div>
+        <VisitSiteButton url={url} color={color} />
+      </div>
+    </div>
+  );
+}
+
+// Main component - đảm bảo hiển thị đúng các tab
 function ProjectsContents() {
-  const [currentState, setCurrentState] = useState<
-    'wmember' | 'gstore' | 'wstore'
-  >('wmember');
+  const [currentState, setCurrentState] = useState<ProjectType>('wmember');
+  const currentProject = projectData[currentState];
+
+  // Nhóm các dự án theo loại để hiển thị trong sidebar
+  const projectGroups = {
+    main: ['wmember', 'gstore', 'wstore'],
+    admin: ['wmember-admin', 'gstore-admin', 'wstore-seller', 'wstore-admin'],
+  };
 
   return (
     <>
@@ -18,376 +784,153 @@ function ProjectsContents() {
         caption="Professional Projects"
         description="Developed modern, high-performance web platforms that solve real business challenges using cutting-edge frontend technologies."
       />
+
       <SectionContent>
         <div className={clsx('flex', 'lg:gap-12')}>
-          <div className={clsx('hidden flex-1 flex-col gap-3 pt-8', 'lg:flex')}>
-            <div className={clsx('flex flex-col gap-3')}>
-              <SectionButton
-                title="WMember.io"
-                icon={
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </div>
-                }
-                description="Community development platform with membership management and engagement tools."
-                active={currentState === 'wmember'}
-                onClick={() => setCurrentState('wmember')}
-              />
-              <SectionButton
-                title="G-Store.ai"
-                icon={
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <circle cx="8" cy="21" r="1" />
-                      <circle cx="19" cy="21" r="1" />
-                      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-                    </svg>
-                  </div>
-                }
-                description="Technology solutions and financial management platform with smart analytics."
-                active={currentState === 'gstore'}
-                onClick={() => setCurrentState('gstore')}
-              />
-              <SectionButton
-                title="WStore.vn"
-                icon={
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                      <path d="M3 6h18" />
-                      <path d="M16 10a4 4 0 0 1-8 0" />
-                    </svg>
-                  </div>
-                }
-                description="Vietnamese e-commerce marketplace with modern shopping experience and multi-vendor capabilities."
-                active={currentState === 'wstore'}
-                onClick={() => setCurrentState('wstore')}
-              />
+          {/* Desktop sidebar */}
+          <div className={clsx('hidden flex-1 flex-col gap-6 pt-8', 'lg:flex')}>
+            {/* Main Applications */}
+            <div className="space-y-2">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Main Applications
+              </h3>
+              <div className={clsx('flex flex-col gap-3')}>
+                {projectGroups.main.map((key) => {
+                  const project = projectData[key as ProjectType];
+                  return (
+                    <SectionButton
+                      key={key}
+                      title={project.title}
+                      icon={
+                        <div
+                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-${project.color}-400 to-${project.secondColor}-600 text-white shadow-lg shadow-${project.color}-500/20 dark:from-${project.color}-500 dark:to-${project.secondColor}-700 dark:shadow-${project.color}-800/30`}
+                        >
+                          {project.icon}
+                        </div>
+                      }
+                      description={project.description}
+                      active={currentState === (key as ProjectType)}
+                      onClick={() => setCurrentState(key as ProjectType)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Management Portals */}
+            <div className="space-y-2">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Management Portals
+              </h3>
+              <div className={clsx('flex flex-col gap-3')}>
+                {projectGroups.admin.map((key) => {
+                  const project = projectData[key as ProjectType];
+                  return (
+                    <SectionButton
+                      key={key}
+                      title={project.title}
+                      icon={
+                        <div
+                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-${project.color}-400 to-${project.secondColor}-600 text-white shadow-lg shadow-${project.color}-500/20 dark:from-${project.color}-500 dark:to-${project.secondColor}-700 dark:shadow-${project.color}-800/30`}
+                        >
+                          {project.icon}
+                        </div>
+                      }
+                      description={project.description}
+                      active={currentState === (key as ProjectType)}
+                      onClick={() => setCurrentState(key as ProjectType)}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
+
+          {/* Main content area */}
           <div className={clsx('w-full', 'lg:w-auto')}>
+            {/* Mobile tabs - Cập nhật để hiển thị tất cả các tab */}
+            <div className="mb-4 flex flex-wrap gap-2 overflow-x-auto p-1 lg:hidden">
+              {/* Main apps tab group */}
+              <div className="flex w-full flex-col">
+                <span className="mb-2 ml-1 text-xs font-medium text-gray-500">
+                  Main Applications
+                </span>
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {projectGroups.main.map((key) => {
+                    const project = projectData[key as ProjectType];
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setCurrentState(key as ProjectType)}
+                        className={`flex items-center whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
+                          currentState === key
+                            ? `bg-${project.color}-500 text-white shadow-md`
+                            : `bg-${project.color}-100 text-${project.color}-700 dark:bg-${project.color}-900/30 dark:text-${project.color}-400`
+                        }`}
+                      >
+                        <span
+                          className={`mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-white text-xs text-${project.color}-600 dark:bg-${project.color}-700 dark:text-white`}
+                        >
+                          {project.title[0]}
+                        </span>
+                        {project.title}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Admin apps tab group */}
+              <div className="flex w-full flex-col">
+                <span className="mb-2 ml-1 text-xs font-medium text-gray-500">
+                  Admin & Seller Portals
+                </span>
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {projectGroups.admin.map((key) => {
+                    const project = projectData[key as ProjectType];
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setCurrentState(key as ProjectType)}
+                        className={`flex items-center whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
+                          currentState === key
+                            ? `bg-${project.color}-500 text-white shadow-md`
+                            : `bg-${project.color}-100 text-${project.color}-700 dark:bg-${project.color}-900/30 dark:text-${project.color}-400`
+                        }`}
+                      >
+                        <span
+                          className={`mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-white text-xs text-${project.color}-600 dark:bg-${project.color}-700 dark:text-white`}
+                        >
+                          {project.title[0]}
+                        </span>
+                        {project.title}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
             <div className={clsx('-mt-[41px]')}>
               <div className={clsx('w-full', 'lg:h-fit lg:w-[600px]')}>
                 <AppWindow
                   type="browser"
-                  browserTabs={[
-                    {
+                  browserTabs={Object.entries(projectData).map(
+                    ([key, project]) => ({
                       icon: (
-                        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-purple-500 text-white">
-                          W
+                        <div
+                          className={`flex h-4 w-4 items-center justify-center rounded-full bg-${project.color}-500 text-white`}
+                        >
+                          {project.title[0]}
                         </div>
                       ),
-                      title: 'WMember.io - Community Platform',
-                      isActive: currentState === 'wmember',
-                    },
-                    {
-                      icon: (
-                        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white">
-                          G
-                        </div>
-                      ),
-                      title: 'G-Store.ai - Tech Solutions',
-                      isActive: currentState === 'gstore',
-                    },
-                    {
-                      icon: (
-                        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-green-500 text-white">
-                          W
-                        </div>
-                      ),
-                      title: 'WStore.vn - E-commerce Platform',
-                      isActive: currentState === 'wstore',
-                    },
-                  ]}
+                      title: project.fullTitle,
+                      isActive: currentState === (key as ProjectType),
+                      onClick: () => setCurrentState(key as ProjectType),
+                    })
+                  )}
                 >
-                  {currentState === 'wmember' && (
-                    <div className="p-4">
-                      <div className="mb-4 flex items-center">
-                        <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-purple-500 text-white">
-                          <span className="font-bold">W</span>
-                        </div>
-                        <h2 className="text-xl font-bold">WMember.io</h2>
-                      </div>
-                      <p className="mb-3 text-gray-700 dark:text-gray-300">
-                        A comprehensive platform for community development and
-                        membership management with modern UX.
-                      </p>
-                      <div className="mb-4">
-                        <h3 className="mb-2 font-medium">Tech Stack:</h3>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Next.js
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            React
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            TailwindCSS
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Framer Motion
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Shadcn UI
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            React Query
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Zustand
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mb-4">
-                        <h3 className="mb-2 font-medium">Features:</h3>
-                        <ul className="list-inside list-disc space-y-1 text-sm">
-                          <li>Community engagement tools</li>
-                          <li>Member management system</li>
-                          <li>Content sharing platform</li>
-                          <li>Interactive discussion forums</li>
-                          <li>Analytics dashboard for community leaders</li>
-                        </ul>
-                      </div>
-                      <div className="mb-4 mt-2 rounded-md bg-gray-100 p-3 dark:bg-gray-800">
-                        <h3 className="mb-2 font-medium text-purple-600 dark:text-purple-400">
-                          Admin Dashboard:
-                        </h3>
-                        <p className="mb-2 text-sm">
-                          Built a powerful admin panel using Vite, TailwindCSS,
-                          and Zustand for state management.
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="rounded-full bg-purple-100 px-3 py-1 text-xs text-purple-800 dark:bg-purple-900 dark:text-purple-100">
-                            Vite
-                          </span>
-                          <span className="rounded-full bg-purple-100 px-3 py-1 text-xs text-purple-800 dark:bg-purple-900 dark:text-purple-100">
-                            Framer Motion
-                          </span>
-                          <span className="rounded-full bg-purple-100 px-3 py-1 text-xs text-purple-800 dark:bg-purple-900 dark:text-purple-100">
-                            Zustand
-                          </span>
-                          <span className="rounded-full bg-purple-100 px-3 py-1 text-xs text-purple-800 dark:bg-purple-900 dark:text-purple-100">
-                            Redux
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-4">
-                        <a
-                          href="https://wmember.io"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cursor-pointer text-blue-600 hover:underline dark:text-blue-400"
-                        >
-                          Visit Site →
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {currentState === 'gstore' && (
-                    <div className="p-4">
-                      <div className="mb-4 flex items-center">
-                        <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
-                          <span className="font-bold">G</span>
-                        </div>
-                        <h2 className="text-xl font-bold">G-Store.ai</h2>
-                      </div>
-                      <p className="mb-3 text-gray-700 dark:text-gray-300">
-                        Technology solutions and financial management platform
-                        with intelligent analytics and modern UI.
-                      </p>
-                      <div className="mb-4">
-                        <h3 className="mb-2 font-medium">Tech Stack:</h3>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Next.js
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            React
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            TailwindCSS
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Framer Motion
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Shadcn UI
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            React Query
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Redux
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Material UI
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mb-4">
-                        <h3 className="mb-2 font-medium">Features:</h3>
-                        <ul className="list-inside list-disc space-y-1 text-sm">
-                          <li>Financial management tools</li>
-                          <li>Data visualization dashboard</li>
-                          <li>Technology solution integration</li>
-                          <li>Business intelligence reporting</li>
-                          <li>Customizable workflow automation</li>
-                        </ul>
-                      </div>
-                      <div className="mb-4 mt-2 rounded-md bg-gray-100 p-3 dark:bg-gray-800">
-                        <h3 className="mb-2 font-medium text-blue-600 dark:text-blue-400">
-                          Admin Dashboard:
-                        </h3>
-                        <p className="mb-2 text-sm">
-                          Developed a comprehensive admin system with Vite for
-                          faster performance and Redux for complex state
-                          management.
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Vite
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            TailwindCSS
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Framer Motion
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Redux
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-4">
-                        <a
-                          href="https://g-store.ai"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cursor-pointer text-blue-600 hover:underline dark:text-blue-400"
-                        >
-                          Visit Site →
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {currentState === 'wstore' && (
-                    <div className="p-4">
-                      <div className="mb-4 flex items-center">
-                        <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
-                          <span className="font-bold">W</span>
-                        </div>
-                        <h2 className="text-xl font-bold">WStore.vn</h2>
-                      </div>
-                      <p className="mb-3 text-gray-700 dark:text-gray-300">
-                        Modern Vietnamese e-commerce marketplace with smooth UX
-                        and comprehensive vendor management.
-                      </p>
-                      <div className="mb-4">
-                        <h3 className="mb-2 font-medium">Tech Stack:</h3>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Next.js
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            React
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            TailwindCSS
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Framer Motion
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Shadcn UI
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            React Query
-                          </span>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                            Zustand
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mb-4">
-                        <h3 className="mb-2 font-medium">Features:</h3>
-                        <ul className="list-inside list-disc space-y-1 text-sm">
-                          <li>Multi-vendor marketplace system</li>
-                          <li>Vietnamese payment integrations</li>
-                          <li>Responsive product showcase</li>
-                          <li>Advanced search and filtering</li>
-                          <li>Vendor dashboard with analytics</li>
-                        </ul>
-                      </div>
-                      <div className="mb-4 mt-2 rounded-md bg-gray-100 p-3 dark:bg-gray-800">
-                        <h3 className="mb-2 font-medium text-green-600 dark:text-green-400">
-                          Admin Dashboard:
-                        </h3>
-                        <p className="mb-2 text-sm">
-                          Built a high-performance admin system using Vite and
-                          Zustand for efficient state management.
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
-                            Vite
-                          </span>
-                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
-                            TailwindCSS
-                          </span>
-                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
-                            Framer Motion
-                          </span>
-                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
-                            Zustand
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-4">
-                        <a
-                          href="https://wstore.vn"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cursor-pointer text-blue-600 hover:underline dark:text-blue-400"
-                        >
-                          Visit Site →
-                        </a>
-                      </div>
-                    </div>
-                  )}
+                  <ProjectDetail project={currentProject} />
                 </AppWindow>
               </div>
             </div>

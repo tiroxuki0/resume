@@ -8,19 +8,24 @@ interface BrowserTabProps {
   icon: ReactNode;
   title: string;
   isActive: boolean;
+  onClick?: any;
 }
 
-function BrowserTab({ icon, title, isActive }: BrowserTabProps) {
+function BrowserTab({ icon, title, isActive, onClick }: BrowserTabProps) {
   return (
     <div
-      className={clsx('flex h-6 items-center truncate rounded-lg', [
-        isActive
-          ? [
-              'bg-slate-200 text-slate-600',
-              'dark:bg-slate-100/20 dark:text-slate-300',
-            ]
-          : ['bg-slate-200/50 text-slate-500', 'dark:bg-slate-100/5'],
-      ])}
+      onClick={onClick}
+      className={clsx(
+        'flex h-6 cursor-pointer items-center truncate rounded-lg',
+        [
+          isActive
+            ? [
+                'bg-slate-200 text-slate-600',
+                'dark:bg-slate-100/20 dark:text-slate-300',
+              ]
+            : ['bg-slate-200/50 text-slate-500', 'dark:bg-slate-100/5'],
+        ]
+      )}
       style={{ width: 200 }}
     >
       <div className={clsx('flex w-full gap-2 px-2 text-xs')}>
@@ -89,12 +94,13 @@ function AppWindow({
             </div>
             {isWithBrowserTabs && (
               <div className={clsx('mt-2 flex gap-2 px-3')}>
-                {browserTabs.map(({ icon, title, isActive }) => (
+                {browserTabs.map(({ icon, title, isActive, onClick }) => (
                   <BrowserTab
                     key={title}
                     icon={icon}
                     title={title}
                     isActive={isActive}
+                    onClick={onClick}
                   />
                 ))}
               </div>
