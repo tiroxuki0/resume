@@ -616,7 +616,7 @@ function VisitSiteButton({ url = '', color = 'purple' }: VisitSiteButtonProps) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center rounded-lg bg-gradient-to-r px-4 py-2 from-${color}-600 to-${secondColor}-600 font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:from-${color}-700 hover:to-${secondColor}-700 hover:scale-[1.02] dark:shadow-${color}-900/20`}
+      className={`inline-flex items-center rounded-lg bg-gradient-to-r px-4 py-2 from-${color}-600 to-${secondColor}-600 font-medium text-black shadow-md transition-all duration-300 hover:shadow-lg dark:text-white hover:from-${color}-700 hover:to-${secondColor}-700 hover:scale-[1.02] dark:shadow-${color}-900/20`}
     >
       <span>Visit Site</span>
       <svg
