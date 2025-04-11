@@ -11,10 +11,22 @@ interface BrowserTabProps {
   onClick?: any;
 }
 
-function BrowserTab({ icon, title, isActive, onClick }: BrowserTabProps) {
+function BrowserTab({
+  icon,
+  title,
+  isActive,
+  onClick = () => {},
+}: BrowserTabProps) {
   return (
     <div
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClick();
+        }
+      }}
+      tabIndex={0}
+      role="button"
       className={clsx(
         'flex h-6 cursor-pointer items-center truncate rounded-lg',
         [

@@ -28,9 +28,9 @@ const projectData = {
     period: '2022 - Present',
     role: 'Frontend Developer',
     url: 'https://wmember.io',
-    color: 'purple',
-    secondColor: 'indigo',
-    accentColor: 'pink',
+    color: 'blue',
+    secondColor: 'sky',
+    accentColor: 'cyan',
     summary: [
       '<span class="font-semibold">Led</span> development of a comprehensive platform for community development and membership management with modern UX.',
       '<span class="font-semibold">Architected</span> the front-end infrastructure with focus on performance and scalability while <span class="font-semibold">implementing</span> real-time WebSocket capabilities for interactive user experiences.',
@@ -87,9 +87,9 @@ const projectData = {
     subtitle: 'Admin Dashboard',
     period: '2022 - Present',
     role: 'Frontend Developer',
-    color: 'fuchsia', // Different color from main product
-    secondColor: 'violet',
-    accentColor: 'purple',
+    color: 'indigo', // Different color from main product
+    secondColor: 'blue',
+    accentColor: 'violet',
     summary: [
       '<span class="font-semibold">Developed</span> a powerful admin dashboard for comprehensive control over the WMember community platform.',
       '<span class="font-semibold">Designed</span> intuitive interfaces for complex data management while <span class="font-semibold">implementing</span> real-time monitoring and analytics for platform health.',
@@ -146,9 +146,9 @@ const projectData = {
     period: '2021 - 2023',
     role: 'Frontend Developer',
     url: 'https://g-store.ai',
-    color: 'blue',
-    secondColor: 'cyan',
-    accentColor: 'indigo',
+    color: 'emerald',
+    secondColor: 'green',
+    accentColor: 'teal',
     summary: [
       '<span class="font-semibold">Developed</span> a technology solutions and financial management platform with intelligent analytics and modern UI.',
       '<span class="font-semibold">Designed</span> the front-end architecture with real-time data visualization while <span class="font-semibold">optimizing</span> performance for complex financial calculations and reports.',
@@ -204,9 +204,9 @@ const projectData = {
     subtitle: 'Management Console',
     period: '2021 - 2023',
     role: 'Frontend Developer',
-    color: 'sky', // Different color from main product
-    secondColor: 'blue',
-    accentColor: 'indigo',
+    color: 'teal', // Different color from main product
+    secondColor: 'emerald',
+    accentColor: 'green',
     summary: [
       '<span class="font-semibold">Built</span> an advanced management console for G-Store.ai with comprehensive financial controls and analytics.',
       '<span class="font-semibold">Engineered</span> robust data visualization components while <span class="font-semibold">integrating</span> complex filtering and reporting capabilities.',
@@ -263,9 +263,9 @@ const projectData = {
     period: '2020 - 2022',
     role: 'Frontend Developer',
     url: 'https://wstore.vn',
-    color: 'green',
-    secondColor: 'teal',
-    accentColor: 'emerald',
+    color: 'amber',
+    secondColor: 'yellow',
+    accentColor: 'orange',
     summary: [
       '<span class="font-semibold">Built</span> a modern Vietnamese e-commerce marketplace with smooth UX and comprehensive vendor management features.',
       '<span class="font-semibold">Collaborated</span> with backend developers to integrate payment systems while <span class="font-semibold">enhancing</span> the search system with advanced filtering and product recommendation algorithms.',
@@ -321,9 +321,9 @@ const projectData = {
     subtitle: 'Seller Portal',
     period: '2020 - 2022',
     role: 'Frontend Developer',
-    color: 'lime', // Different color from main product
-    secondColor: 'emerald',
-    accentColor: 'green',
+    color: 'orange', // Different color from main product
+    secondColor: 'amber',
+    accentColor: 'yellow',
     summary: [
       '<span class="font-semibold">Built</span> an intuitive seller portal for WStore.vn vendors to manage their store operations efficiently.',
       '<span class="font-semibold">Designed</span> dashboards for tracking sales performance while <span class="font-semibold">creating</span> streamlined interfaces for product and order management.',
@@ -380,9 +380,9 @@ const projectData = {
     subtitle: 'Admin Panel',
     period: '2020 - 2022',
     role: 'Frontend Developer',
-    color: 'lime', // Different color from main product
-    secondColor: 'emerald',
-    accentColor: 'green',
+    color: 'rose', // Different color from main product
+    secondColor: 'pink',
+    accentColor: 'red',
     summary: [
       '<span class="font-semibold">Developed</span> a comprehensive control panel for the WStore.vn e-commerce platform with robust management tools.',
       '<span class="font-semibold">Implemented</span> order processing workflows and <span class="font-semibold">created</span> interfaces for managing products, vendors, and promotions.',
@@ -432,13 +432,19 @@ const projectData = {
 };
 
 // Advanced Techniques Card Component
-function AdvancedTechniquesCard({ color = 'purple', isAdmin = false }) {
+type AdvancedTechniquesCardProps = {
+  color?: string;
+  isAdmin?: boolean;
+};
+
+function AdvancedTechniquesCard({
+  color = 'purple',
+  isAdmin = false,
+}: AdvancedTechniquesCardProps) {
   const secondColor =
     color === 'purple' ? 'indigo' : color === 'blue' ? 'cyan' : 'teal';
 
-  // Chọn nội dung hiển thị dựa vào loại ứng dụng
   const techniques = isAdmin ? (
-    // Admin techniques content
     <>
       <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
         <span className="font-medium">Optimized</span> application performance
@@ -491,10 +497,51 @@ function AdvancedTechniquesCard({ color = 'purple', isAdmin = false }) {
 
   return (
     <div
-      className={`rounded-lg bg-gradient-to-r p-5 from-${color}-50/80 to-${secondColor}-50/80 border shadow-sm border-${color}-100/60 dark:from-${color}-900/20 dark:to-${secondColor}-900/20 dark:border-${color}-800/30 mb-6 backdrop-blur-sm`}
+      className={clsx(
+        'mb-6 rounded-lg border p-5 shadow-sm backdrop-blur-sm',
+        {
+          // Light mode background gradients
+          'border-blue-100/60 from-blue-50/80 to-sky-50/80': color === 'blue',
+          'border-indigo-100/60 from-indigo-50/80 to-blue-50/80':
+            color === 'indigo',
+          'border-emerald-100/60 from-emerald-50/80 to-green-50/80':
+            color === 'emerald',
+          'border-teal-100/60 from-teal-50/80 to-emerald-50/80':
+            color === 'teal',
+          'border-amber-100/60 from-amber-50/80 to-yellow-50/80':
+            color === 'amber',
+          'border-orange-100/60 from-orange-50/80 to-amber-50/80':
+            color === 'orange',
+          'border-rose-100/60 from-rose-50/80 to-pink-50/80': color === 'rose',
+          // Dark mode
+          'dark:border-blue-800/30 dark:from-blue-900/20 dark:to-sky-900/20':
+            color === 'blue',
+          'dark:border-indigo-800/30 dark:from-indigo-900/20 dark:to-blue-900/20':
+            color === 'indigo',
+          'dark:border-emerald-800/30 dark:from-emerald-900/20 dark:to-green-900/20':
+            color === 'emerald',
+          'dark:border-teal-800/30 dark:from-teal-900/20 dark:to-emerald-900/20':
+            color === 'teal',
+          'dark:border-amber-800/30 dark:from-amber-900/20 dark:to-yellow-900/20':
+            color === 'amber',
+          'dark:border-orange-800/30 dark:from-orange-900/20 dark:to-amber-900/20':
+            color === 'orange',
+          'dark:border-rose-800/30 dark:from-rose-900/20 dark:to-pink-900/20':
+            color === 'rose',
+        },
+        'bg-gradient-to-r'
+      )}
     >
       <h3
-        className={`mb-3 flex items-center text-${color}-700 dark:text-${color}-400 font-semibold`}
+        className={clsx('mb-3 flex items-center font-semibold', {
+          'text-blue-700 dark:text-blue-400': color === 'blue',
+          'text-indigo-700 dark:text-indigo-400': color === 'indigo',
+          'text-emerald-700 dark:text-emerald-400': color === 'emerald',
+          'text-teal-700 dark:text-teal-400': color === 'teal',
+          'text-amber-700 dark:text-amber-400': color === 'amber',
+          'text-orange-700 dark:text-orange-400': color === 'orange',
+          'text-rose-700 dark:text-rose-400': color === 'rose',
+        })}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -519,7 +566,30 @@ function AdvancedTechniquesCard({ color = 'purple', isAdmin = false }) {
         {techTags.map((tech) => (
           <span
             key={tech}
-            className={`inline-flex items-center rounded-full bg-${color}-100/80 px-2.5 py-0.5 text-xs font-medium text-${color}-800 dark:bg-${color}-900/50 dark:text-${color}-300`}
+            className={clsx(
+              'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+              {
+                // Light mode
+                'bg-blue-100/80 text-blue-800': color === 'blue',
+                'bg-indigo-100/80 text-indigo-800': color === 'indigo',
+                'bg-emerald-100/80 text-emerald-800': color === 'emerald',
+                'bg-teal-100/80 text-teal-800': color === 'teal',
+                'bg-amber-100/80 text-amber-800': color === 'amber',
+                'bg-orange-100/80 text-orange-800': color === 'orange',
+                'bg-rose-100/80 text-rose-800': color === 'rose',
+                // Dark mode
+                'dark:bg-blue-900/50 dark:text-blue-300': color === 'blue',
+                'dark:bg-indigo-900/50 dark:text-indigo-300':
+                  color === 'indigo',
+                'dark:bg-emerald-900/50 dark:text-emerald-300':
+                  color === 'emerald',
+                'dark:bg-teal-900/50 dark:text-teal-300': color === 'teal',
+                'dark:bg-amber-900/50 dark:text-amber-300': color === 'amber',
+                'dark:bg-orange-900/50 dark:text-orange-300':
+                  color === 'orange',
+                'dark:bg-rose-900/50 dark:text-rose-300': color === 'rose',
+              }
+            )}
           >
             {tech}
           </span>
@@ -529,12 +599,17 @@ function AdvancedTechniquesCard({ color = 'purple', isAdmin = false }) {
   );
 }
 
+type VisitSiteButtonProps = {
+  url?: string;
+  color?: string;
+};
+
 // Visit Site Button Component
-function VisitSiteButton({ url, color = 'purple' }) {
+function VisitSiteButton({ url = '', color = 'purple' }: VisitSiteButtonProps) {
   const secondColor =
     color === 'purple' ? 'indigo' : color === 'blue' ? 'cyan' : 'teal';
 
-  if (!url) return <></>;
+  if (!url) return null;
 
   return (
     <a
@@ -562,15 +637,25 @@ function VisitSiteButton({ url, color = 'purple' }) {
   );
 }
 
+type ProjectSectionProps = {
+  title: string;
+  items?: string[];
+  color: string;
+  icon: React.ReactNode;
+};
+
 // Section for tech stack, features, and contributions
-function ProjectSection({ title, items, color, icon }) {
+function ProjectSection({
+  title,
+  items = [],
+  color,
+  icon,
+}: ProjectSectionProps) {
   return (
     <div
       className={`rounded-lg border border-${color}-100/80 bg-white/70 p-5 shadow-sm transition-all duration-300 hover:shadow-md dark:border-${color}-800/20 dark:bg-gray-800/40`}
     >
-      <h3
-        className={`mb-3 flex items-center font-semibold text-gray-800 dark:text-gray-200`}
-      >
+      <h3 className="mb-3 flex items-center font-semibold text-gray-800 dark:text-gray-200">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`mr-2 h-5 w-5 text-${color}-500`}
@@ -583,7 +668,7 @@ function ProjectSection({ title, items, color, icon }) {
         {title}
       </h3>
 
-      {Array.isArray(items) ? (
+      {Array.isArray(items) && (
         <ul className="space-y-2 text-gray-700 dark:text-gray-300">
           {items.map((item) => (
             <li key={item} className="flex items-start">
@@ -596,24 +681,30 @@ function ProjectSection({ title, items, color, icon }) {
             </li>
           ))}
         </ul>
-      ) : (
-        <div className="flex flex-wrap gap-2">
-          {items.map((tech: any) => (
-            <span
-              key={tech}
-              className={`rounded-full border border-${color}-200 bg-white px-3 py-1.5 text-sm font-medium text-${color}-700 shadow-sm transition-all duration-200 hover:scale-105 hover:border-${color}-300 hover:shadow-md dark:border-${color}-800/40 dark:bg-gray-800 dark:text-${color}-300`}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
       )}
     </div>
   );
 }
 
 // Project Detail Component
-function ProjectDetail({ project }) {
+type ProjectDetailProps = {
+  project: {
+    color: string;
+    secondColor: string;
+    accentColor: string;
+    title: string;
+    subtitle: string;
+    period: string;
+    summary: string[];
+    techStack: string[];
+    features: string[];
+    contributions: string[];
+    role: string;
+    url?: string;
+  };
+};
+
+function ProjectDetail({ project }: ProjectDetailProps) {
   const {
     color,
     secondColor,
@@ -636,13 +727,13 @@ function ProjectDetail({ project }) {
       {/* Background decorative elements */}
       <div
         className={`absolute right-0 top-0 -mr-10 -mt-10 h-40 w-40 rounded-full bg-${color}-100 opacity-50 blur-3xl dark:bg-${color}-700 dark:opacity-10`}
-      ></div>
+      />
       <div
         className={`absolute bottom-0 left-0 -mb-12 -ml-12 h-40 w-40 rounded-full bg-${secondColor}-100 opacity-50 blur-3xl dark:bg-${secondColor}-700 dark:opacity-10`}
-      ></div>
+      />
       <div
         className={`absolute left-1/3 top-1/2 -ml-12 -mt-12 h-24 w-24 rounded-full bg-${accentColor}-100 opacity-30 blur-2xl dark:bg-${accentColor}-700 dark:opacity-10`}
-      ></div>
+      />
 
       {/* Header */}
       <div className="relative mb-6 flex items-center">
@@ -653,7 +744,7 @@ function ProjectDetail({ project }) {
         </div>
         <div>
           <h2
-            className={`bg-gradient-to-r from-${color}-600 to-${secondColor}-600 bg-clip-text text-2xl font-bold text-transparent dark:from-${color}-400 dark:to-${secondColor}-400`}
+            className={`bg-gradient-to-r from-${color}-600 to-${secondColor}-600 bg-clip-text text-2xl font-bold text-transparent dark:from-${color}-400 dark:to-${secondColor}-400 text-black dark:text-white`}
           >
             {title}
           </h2>
@@ -678,7 +769,7 @@ function ProjectDetail({ project }) {
       >
         {summary.map((paragraph, idx) => (
           <p
-            key={idx}
+            key={paragraph}
             className={idx !== summary.length - 1 ? 'mb-3' : ''}
             dangerouslySetInnerHTML={{ __html: paragraph }}
           />
@@ -861,6 +952,7 @@ function ProjectsContents() {
                     return (
                       <button
                         key={key}
+                        type="button"
                         onClick={() => setCurrentState(key as ProjectType)}
                         className={`flex items-center whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
                           currentState === key
@@ -890,6 +982,7 @@ function ProjectsContents() {
                     const project = projectData[key as ProjectType];
                     return (
                       <button
+                        type="button"
                         key={key}
                         onClick={() => setCurrentState(key as ProjectType)}
                         className={`flex items-center whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
