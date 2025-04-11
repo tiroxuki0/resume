@@ -738,7 +738,7 @@ function ProjectDetail({ project }: ProjectDetailProps) {
       {/* Header */}
       <div className="relative mb-6 flex items-center">
         <div
-          className={`mr-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-${color}-500 to-${secondColor}-600 text-white shadow-lg shadow-${color}-500/20 dark:shadow-${color}-800/30`}
+          className={`mr-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-${color}-500 to-${secondColor}-600 text-black shadow-lg dark:text-white shadow-${color}-500/20 dark:shadow-${color}-800/30`}
         >
           <span className="text-xl font-bold">{title[0]}</span>
         </div>
@@ -894,7 +894,7 @@ function ProjectsContents() {
                       title={project.title}
                       icon={
                         <div
-                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-${project.color}-400 to-${project.secondColor}-600 text-white shadow-lg shadow-${project.color}-500/20 dark:from-${project.color}-500 dark:to-${project.secondColor}-700 dark:shadow-${project.color}-800/30`}
+                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-${project.color}-400 to-${project.secondColor}-600 shadow-lg [&>svg]:dark:text-white shadow-${project.color}-500/20 dark:from-${project.color}-500 dark:to-${project.secondColor}-700 dark:shadow-${project.color}-800/30 [&>svg]:text-[black]`}
                         >
                           {project.icon}
                         </div>
@@ -922,7 +922,7 @@ function ProjectsContents() {
                       title={project.title}
                       icon={
                         <div
-                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-${project.color}-400 to-${project.secondColor}-600 text-white shadow-lg shadow-${project.color}-500/20 dark:from-${project.color}-500 dark:to-${project.secondColor}-700 dark:shadow-${project.color}-800/30`}
+                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-${project.color}-400 to-${project.secondColor}-600 shadow-lg [&>svg]:text-[black] [&>svg]:dark:text-white shadow-${project.color}-500/20 dark:from-${project.color}-500 dark:to-${project.secondColor}-700 dark:shadow-${project.color}-800/30`}
                         >
                           {project.icon}
                         </div>
@@ -1012,7 +1012,7 @@ function ProjectsContents() {
                     ([key, project]) => ({
                       icon: (
                         <div
-                          className={`flex h-4 w-4 items-center justify-center rounded-full bg-${project.color}-500 text-white`}
+                          className={`flex h-4 w-4 items-center justify-center rounded-full bg-${project.color}-500 text-black dark:text-white`}
                         >
                           {project.title[0]}
                         </div>
