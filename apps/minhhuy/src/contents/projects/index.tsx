@@ -25,7 +25,7 @@ const projectData = {
     description:
       'Community development platform with membership management and engagement tools.',
     subtitle: 'Community Platform',
-    period: '2022 - 2025',
+    period: '2022 - Present',
     role: 'Frontend Developer',
     url: 'https://wmember.io',
     color: 'blue',
@@ -85,7 +85,7 @@ const projectData = {
     description:
       'Administrator control panel for the WMember community platform with advanced management capabilities.',
     subtitle: 'Admin Dashboard',
-    period: '2022 - 2025',
+    period: '2022 - Present',
     role: 'Frontend Developer',
     color: 'indigo', // Different color from main product
     secondColor: 'blue',
@@ -143,7 +143,7 @@ const projectData = {
     description:
       'Technology solutions and financial management platform with smart analytics.',
     subtitle: 'Tech Solutions',
-    period: '2022 - 2024',
+    period: '2021 - 2023',
     role: 'Frontend Developer',
     url: 'https://g-store.ai',
     color: 'emerald',
@@ -202,7 +202,7 @@ const projectData = {
     description:
       'Powerful management console for G-Store.ai with comprehensive control over financial data and analytics.',
     subtitle: 'Management Console',
-    period: '2022 - 2024',
+    period: '2021 - 2023',
     role: 'Frontend Developer',
     color: 'teal', // Different color from main product
     secondColor: 'emerald',
@@ -260,7 +260,7 @@ const projectData = {
     description:
       'Vietnamese e-commerce marketplace with modern shopping experience and multi-vendor capabilities.',
     subtitle: 'E-commerce Platform',
-    period: '2022 - 2023',
+    period: '2020 - 2022',
     role: 'Frontend Developer',
     url: 'https://wstore.vn',
     color: 'amber',
@@ -319,7 +319,7 @@ const projectData = {
     description:
       'Vendor portal for WStore.vn allowing sellers to manage products, orders, and sales analytics.',
     subtitle: 'Seller Portal',
-    period: '2022 - 2023',
+    period: '2020 - 2022',
     role: 'Frontend Developer',
     color: 'orange', // Different color from main product
     secondColor: 'amber',
@@ -378,7 +378,7 @@ const projectData = {
     description:
       'Administrative control panel for WStore.vn e-commerce platform with comprehensive management tools.',
     subtitle: 'Admin Panel',
-    period: '2022 - 2023',
+    period: '2020 - 2022',
     role: 'Frontend Developer',
     color: 'rose', // Different color from main product
     secondColor: 'pink',
@@ -653,7 +653,7 @@ function ProjectSection({
 }: ProjectSectionProps) {
   return (
     <div
-      className={`rounded-lg border border-${color}-100/80 bg-white/70 p-5 shadow-sm transition-all duration-300 hover:shadow-md dark:border-${color}-800/20`}
+      className={`rounded-lg border border-${color}-100/80 bg-white/70 p-5 shadow-sm transition-all duration-300 hover:shadow-md dark:border-${color}-800/20 dark:bg-gray-800/40`}
     >
       <h3 className="mb-3 flex items-center font-semibold text-gray-800 dark:text-gray-200">
         <svg
