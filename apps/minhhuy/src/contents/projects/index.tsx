@@ -744,7 +744,7 @@ function ProjectDetail({ project }: ProjectDetailProps) {
         </div>
         <div>
           <h2
-            className={`bg-gradient-to-r from-${color}-600 to-${secondColor}-600 bg-clip-text text-2xl font-bold text-transparent dark:from-${color}-400 dark:to-${secondColor}-400 text-black dark:text-white`}
+            className={`bg-gradient-to-r from-${color}-600 to-${secondColor}-600 bg-clip-text text-2xl font-bold dark:from-${color}-400 dark:to-${secondColor}-400 text-black dark:text-white`}
           >
             {title}
           </h2>
