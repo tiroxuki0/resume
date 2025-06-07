@@ -41,6 +41,18 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    // ECMP Colors
+    {
+      pattern:
+        /^(bg|text|border|from|to|shadow)-(purple|indigo|blue)-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+    // Other project colors
+    {
+      pattern:
+        /^(bg|text|border|from|to|shadow)-(sky|cyan|emerald|green|teal|amber|yellow|orange|rose|pink|red)-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+  ],
   plugins: [
     function ({ addVariant }) {
       addVariant('fm', '.fm &');

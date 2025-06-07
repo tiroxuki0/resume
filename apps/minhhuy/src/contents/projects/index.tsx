@@ -15,10 +15,72 @@ type ProjectType =
   | 'wmember-admin'
   | 'gstore-admin'
   | 'wstore-seller'
-  | 'wstore-admin';
+  | 'wstore-admin'
+  | 'ecmp';
 
-// Dữ liệu dự án (bổ sung thêm các dự án admin/seller)
 const projectData = {
+  ecmp: {
+    title: 'Enterprise Cloud Management Platform (ECMP)',
+    fullTitle: 'Enterprise Cloud Management Platform',
+    description:
+      'A sophisticated cloud management platform for enterprise-level control over cloud infrastructure.',
+    subtitle: 'Cloud Management Platform',
+    period: '2025',
+    role: 'Frontend Developer',
+    color: 'indigo',
+    secondColor: 'indigo',
+    accentColor: 'indigo',
+    summary: [
+      '<span class="font-semibold">Built</span> a comprehensive cloud management platform enabling efficient control over distributed cloud resources.',
+      '<span class="font-semibold">Developed</span> robust interfaces for multi-cloud resource management while <span class="font-semibold">implementing</span> secure role-based access control systems.',
+    ],
+    techStack: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'Ant Design',
+      'WebSocket',
+      'Zustand',
+      'React Query',
+      'i18next',
+    ],
+    features: [
+      'Role-based access control with multi-tenancy',
+      'Multi-cloud provider integration (AWS, Azure, GCP)',
+      'Real-time resource monitoring and alerts',
+      'Storage and network management interface',
+      'Cluster management and orchestration',
+    ],
+    contributions: [
+      'Implemented comprehensive role-based access control',
+      'Built interfaces for cloud zones and regions management',
+      'Developed multi-cloud resource management system',
+      'Created storage and network management features',
+      'Implemented cluster management capabilities',
+    ],
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* Main cloud */}
+        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+        {/* Multi-cloud elements */}
+        <path d="M9 16a3 3 0 1 0 6 0" />
+        <path d="M15 16a3 3 0 1 0 6 0" />
+        {/* Connection/Network lines */}
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+  },
   wmember: {
     title: 'WMember.io',
     fullTitle: 'WMember.io - Community Platform',
@@ -673,7 +735,7 @@ function ProjectSection({
           {items.map((item) => (
             <li key={item} className="flex items-start">
               <span
-                className={`mr-2 mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-${color}-100 p-[3px] text-xs text-${color}-700 dark:bg-${color}-900/40 dark:text-${color}-300`}
+                className={`mr-2 mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full p-[3px] text-xs text-${color}-700 dark:text-${color}-300`}
               >
                 <ArrowRight size={12} />
               </span>
@@ -722,7 +784,7 @@ function ProjectDetail({ project }: ProjectDetailProps) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-lg bg-gradient-to-br from-white to-${color}-50 p-6 dark:from-gray-800 dark:to-${color}-900/20`}
+      className={`relative overflow-hidden rounded-lg rounded-tl-none rounded-tr-none bg-gradient-to-br from-white to-${color}-50 p-6 dark:from-gray-800 dark:to-${color}-900/20`}
     >
       {/* Background decorative elements */}
       <div
@@ -864,7 +926,7 @@ function ProjectsContents() {
 
   // Nhóm các dự án theo loại để hiển thị trong sidebar
   const projectGroups = {
-    main: ['wmember', 'gstore', 'wstore'],
+    main: ['ecmp', 'wmember', 'gstore', 'wstore'],
     admin: ['wmember-admin', 'gstore-admin', 'wstore-seller', 'wstore-admin'],
   };
 

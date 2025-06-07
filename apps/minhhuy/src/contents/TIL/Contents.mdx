@@ -1,5 +1,596 @@
 import TIL from '@/components/mdx/TIL';
 
+<TIL.Items date="2025-06-07">
+
+  <TIL.Item>
+    
+    ## WebGPU - High-performance graphics and computing for the web
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>webgpu</TIL.ItemTag>
+      <TIL.ItemTag>graphics</TIL.ItemTag>
+      <TIL.ItemTag>performance</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    WebGPU has become the new standard for 3D graphics and high-performance computing in the browser:
+
+    ```js
+    async function initWebGPU() {
+      if (!navigator.gpu) {
+        throw new Error('WebGPU is not supported in this browser');
+      }
+
+      // Initialize adapter and device
+      const adapter = await navigator.gpu.requestAdapter();
+      const device = await adapter.requestDevice();
+
+      // Get context from canvas
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('webgpu');
+
+      // Configure context
+      const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
+      context.configure({
+        device: device,
+        format: canvasFormat,
+        alphaMode: 'premultiplied',
+      });
+
+      // Create shader
+      const shaderModule = device.createShaderModule({
+        code: `
+          @vertex
+          fn vertexMain(@location(0) position: vec2f) -> @builtin(position) vec4f {
+            return vec4f(position, 0.0, 1.0);
+          }
+
+          @fragment
+          fn fragmentMain() -> @location(0) vec4f {
+            return vec4f(0.0, 0.5, 1.0, 1.0); // Blue color
+          }
+        `
+      });
+
+      // Create pipeline
+      const pipeline = device.createRenderPipeline({
+        layout: 'auto',
+        vertex: {
+          module: shaderModule,
+          entryPoint: 'vertexMain',
+          buffers: [{
+            arrayStride: 8,
+            attributes: [{
+              shaderLocation: 0,
+              offset: 0,
+              format: 'float32x2',
+            }],
+          }],
+        },
+        fragment: {
+          module: shaderModule,
+          entryPoint: 'fragmentMain',
+          targets: [{
+            format: canvasFormat,
+          }],
+        },
+      });
+
+      return { device, context, pipeline };
+    }
+    ```
+
+    WebGPU brings numerous benefits:
+    - Graphics performance much faster than WebGL
+    - Powerful parallel computing for AI and machine learning
+    - Modern architecture compatible with the latest GPUs
+    - Better designed, safer API than WebGL
+
+    All modern browsers (Chrome, Edge, Firefox, Safari) now support WebGPU, enabling the development of complex graphics applications and AI models running directly in the browser.
+
+    [WebGPU Documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API)
+
+  </TIL.Item>
+
+  <TIL.Item>
+    
+    ## Server Actions and React Server Components - Web development without API endpoints
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>react</TIL.ItemTag>
+      <TIL.ItemTag>next.js</TIL.ItemTag>
+      <TIL.ItemTag>server-components</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    The API-less development model has become the new standard in Next.js and React:
+
+    ```jsx
+    // app/admin/dashboard/page.jsx
+    // Server Component - Doesn't run on the client
+    import { prisma } from '@/lib/db';
+    import AdminPanel from './AdminPanel';
+
+    // Sensitive data only processed on the server
+    async function getAdminData() {
+      // Direct database queries from the component
+      const users = await prisma.user.findMany({
+        include: { permissions: true }
+      });
+      const stats = await prisma.analytics.getSummary();
+      return { users, stats };
+    }
+
+    // Access database in component without creating an API
+    export default async function AdminDashboard() {
+      const { users, stats } = await getAdminData();
+
+      return (
+        <main>
+          <h1>Admin Dashboard</h1>
+          <div className="stats-summary">
+            <p>Total users: {stats.totalUsers}</p>
+            <p>Today's orders: {stats.todayOrders}</p>
+            <p>Revenue: ${stats.revenue.toLocaleString()}</p>
+          </div>
+
+          {/* Client component receives data from server */}
+          <AdminPanel initialData={{ users, stats }} />
+        </main>
+      );
+    }
+
+    // AdminForm.jsx (in the same directory)
+    "use client";
+
+    import { useFormState } from 'react-dom';
+    import { updateUserPermissions } from './actions';
+
+    export function AdminForm({ userId }) {
+      // Connect form with server action
+      const [state, formAction] = useFormState(updateUserPermissions, {
+        userId,
+        success: false,
+        error: null
+      });
+
+      return (
+        <form action={formAction}>
+          <input type="hidden" name="userId" value={userId} />
+          <select name="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="moderator">Moderator</option>
+          </select>
+          <button type="submit">Update Permissions</button>
+
+          {state.success && <p className="success">Update successful!</p>}
+          {state.error && <p className="error">{state.error}</p>}
+        </form>
+      );
+    }
+
+    // actions.js
+    "use server";
+
+    import { prisma } from '@/lib/db';
+    import { revalidatePath } from 'next/cache';
+
+    export async function updateUserPermissions(prevState, formData) {
+      const userId = formData.get('userId');
+      const role = formData.get('role');
+
+      try {
+        await prisma.user.update({
+          where: { id: userId },
+          data: { role }
+        });
+
+        // Refresh related server components
+        revalidatePath('/admin/dashboard');
+
+        return { userId, success: true, error: null };
+      } catch (error) {
+        return { userId, success: false, error: error.message };
+      }
+    }
+    ```
+
+    This model provides:
+    - Complete elimination of manual API endpoints
+    - Better security because sensitive code only runs on the server
+    - Type-safety from database to UI with full-stack TypeScript
+    - Simpler, more efficient development experience
+
+    [Next.js Server Components Documentation](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
+
+  </TIL.Item>
+
+  <TIL.Item>
+    
+    ## Hono and New Microframeworks - Replacing Express.js
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>hono</TIL.ItemTag>
+      <TIL.ItemTag>elysia</TIL.ItemTag>
+      <TIL.ItemTag>backend</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    High-performance microframeworks like Hono and Elysia are replacing Express.js:
+
+    ```typescript
+    // API with Hono
+    import { Hono } from 'hono';
+    import { cors } from 'hono/cors';
+    import { jwt } from 'hono/jwt';
+    import { prisma } from './db';
+
+    // Type-safe API routes
+    const app = new Hono()
+      .use(cors())
+      .use('/api/auth/*', jwt({ secret: process.env.JWT_SECRET }));
+
+    // Typed request/response with zod validation
+    import { z } from 'zod';
+    const userSchema = z.object({
+      name: z.string().min(2),
+      email: z.string().email(),
+      age: z.number().min(18).optional(),
+    });
+
+    app.post('/api/users', async (c) => {
+      const body = await c.req.json();
+
+      // Validate with zod
+      const result = userSchema.safeParse(body);
+      if (!result.success) {
+        return c.json({ error: result.error }, 400);
+      }
+
+      const user = await prisma.user.create({
+        data: result.data
+      });
+
+      return c.json({ user }, 201);
+    });
+
+    // Middleware and type safety
+    app.get('/api/profile', async (c) => {
+      // JWT payload is automatically typed
+      const user = c.get('jwtPayload');
+
+      const profile = await prisma.user.findUnique({
+        where: { id: user.id },
+        include: { posts: true }
+      });
+
+      if (!profile) {
+        return c.json({ error: 'User not found' }, 404);
+      }
+
+      return c.json({ profile });
+    });
+
+    // New runtimes: Edge, Cloudflare, Vercel, Deno, Bun
+    export default app;
+    ```
+
+    Hono, Elysia, and other new microframeworks outperform Express.js in several ways:
+    - 10-20x faster performance
+    - Type-safe APIs with end-to-end TypeScript
+    - Support for multiple runtimes (Node, Deno, Bun, Cloudflare Workers)
+    - Small bundle size, runs well in edge environments
+    - Modern API with async/await and ESM
+
+    [Hono Documentation](https://hono.dev)
+    [Elysia Documentation](https://elysiajs.com)
+
+  </TIL.Item>
+
+  <TIL.Item>
+    
+    ## UI Kits for 2025 - Shadcn, Park UI and Aceternity UI
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>ui</TIL.ItemTag>
+      <TIL.ItemTag>tailwind</TIL.ItemTag>
+      <TIL.ItemTag>design-system</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    ## UI Kits for 2025 - Shadcn, Park UI and Aceternity UI
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>ui</TIL.ItemTag>
+      <TIL.ItemTag>tailwind</TIL.ItemTag>
+      <TIL.ItemTag>design-system</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    The modern UI Kit ecosystem has evolved dramatically, changing how we approach component libraries:
+
+    ```jsx
+    // Example of Shadcn/ui - Copy code instead of installing an npm package
+    // components/ui/calendar.tsx
+    import * as React from "react"
+    import { ChevronLeft, ChevronRight } from "lucide-react"
+    import { DayPicker } from "react-day-picker"
+
+    import { cn } from "@/lib/utils"
+    import { buttonVariants } from "@/components/ui/button"
+
+    export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+    function Calendar({
+      className,
+      classNames,
+      showOutsideDays = true,
+      ...props
+    }: CalendarProps) {
+      return (
+        <DayPicker
+          showOutsideDays={showOutsideDays}
+          className={cn("p-3", className)}
+          classNames={{
+            months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+            month: "space-y-4",
+            caption: "flex justify-center pt-1 relative items-center",
+            caption_label: "text-sm font-medium",
+            nav: "space-x-1 flex items-center",
+            nav_button: cn(
+              buttonVariants({ variant: "outline" }),
+              "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+            ),
+            nav_button_previous: "absolute left-1",
+            nav_button_next: "absolute right-1",
+            table: "w-full border-collapse space-y-1",
+            head_row: "flex",
+            head_cell:
+              "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+            row: "flex w-full mt-2",
+            cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+            day: cn(
+              buttonVariants({ variant: "ghost" }),
+              "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+            ),
+            day_range_end: "day-range-end",
+            day_selected:
+              "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+            day_today: "bg-accent text-accent-foreground",
+            day_outside:
+              "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+            day_disabled: "text-muted-foreground opacity-50",
+            day_range_middle:
+              "aria-selected:bg-accent aria-selected:text-accent-foreground",
+            day_hidden: "invisible",
+            ...classNames,
+          }}
+          components={{
+            IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
+            IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+          }}
+          {...props}
+        />
+      )
+    }
+    Calendar.displayName = "Calendar"
+
+    export { Calendar }
+    ```
+
+    ```jsx
+    // Using Aceternity UI for modern animations
+    "use client";
+
+    import { SparklesCore } from "@/components/ui/sparkles";
+    import { Button } from "@/components/ui/button";
+    import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+
+    export function HeroSection() {
+      return (
+        <div className="h-screen w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+          <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
+            ACETERNITY
+          </h1>
+          <div className="w-[40rem] h-40 relative">
+            {/* Sparkles effect with purple hue */}
+            <SparklesCore
+              background="transparent"
+              minSize={0.4}
+              maxSize={1}
+              particleDensity={70}
+              className="w-full h-full"
+              particleColor="#8B5CF6"
+            />
+          </div>
+
+          <div className="flex gap-4 mt-8 z-20">
+            <HoverBorderGradient
+              as={Button}
+              className="text-white"
+              gradient="gradient-1"
+            >
+              Get Started
+            </HoverBorderGradient>
+
+            <HoverBorderGradient
+              as={Button}
+              variant="outline"
+              className="text-white"
+              gradient="gradient-2"
+            >
+              Learn More
+            </HoverBorderGradient>
+          </div>
+        </div>
+      );
+    }
+    ```
+
+    These new approaches are changing how we work with UI components:
+
+    1. **Copy-paste instead of installing packages**: Shadcn/ui isn't a library, but a collection of components you copy into your project and customize.
+
+    2. **No version lock**: You have complete control over the code and can upgrade parts without worrying about breaking changes.
+
+    3. **Better performance**: Smaller bundle size because you only use what you need.
+
+    4. **Advanced animations**: Aceternity UI and Park UI provide complex animations like 3D cards, sparkles, and spotlight effects.
+
+    [Shadcn Documentation](https://ui.shadcn.com)
+    [Aceternity UI](https://ui.aceternity.com)
+    [Park UI](https://park-ui.com)
+
+  </TIL.Item>
+
+  <TIL.Item>
+    
+    ## Rust and WebAssembly for Frontend
+
+    <TIL.ItemTags>
+      <TIL.ItemTag>rust</TIL.ItemTag>
+      <TIL.ItemTag>wasm</TIL.ItemTag>
+      <TIL.ItemTag>performance</TIL.ItemTag>
+    </TIL.ItemTags>
+
+    Rust + WebAssembly has become an essential tool in high-performance frontend applications:
+
+    ```rust
+    // lib.rs - Rust code
+    use wasm_bindgen::prelude::*;
+
+    #[wasm_bindgen]
+    pub fn fibonacci(n: u32) -> u32 {
+        match n {
+            0 => 0,
+            1 => 1,
+            _ => fibonacci(n - 1) + fibonacci(n - 2),
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn process_image(data: &[u8], width: u32, height: u32) -> Vec<u8> {
+        let mut result = Vec::with_capacity(data.len());
+
+        // Image processing algorithm written in Rust
+        // Processing millions of pixels efficiently
+        for i in (0..data.len()).step_by(4) {
+            // Apply filter, blur, edge detection, etc.
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+            let a = data[i + 3];
+
+            // Grayscale conversion
+            let gray = (0.299 * r as f32 + 0.587 * g as f32 + 0.114 * b as f32) as u8;
+
+            result.push(gray); // R
+            result.push(gray); // G
+            result.push(gray); // B
+            result.push(a);    // A
+        }
+
+        result
+    }
+    ```
+
+    ```jsx
+    // React component using Rust WASM
+    import { useEffect, useState } from 'react';
+    import init, { process_image } from 'image_processor_wasm';
+
+    function ImageProcessor({ imageUrl }) {
+      const [processedImageUrl, setProcessedImageUrl] = useState(null);
+      const [processing, setProcessing] = useState(false);
+
+      useEffect(() => {
+        async function processImage() {
+          // Initialize WASM module
+          await init();
+          setProcessing(true);
+
+          try {
+            // Get image data
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const bitmap = await createImageBitmap(blob);
+
+            // Draw on canvas to get pixel data
+            const canvas = document.createElement('canvas');
+            canvas.width = bitmap.width;
+            canvas.height = bitmap.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(bitmap, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+            // Call Rust WASM function for fast image processing
+            const start = performance.now();
+            const processedData = process_image(
+              new Uint8Array(imageData.data),
+              canvas.width,
+              canvas.height
+            );
+            console.log(`Processing took ${performance.now() - start}ms`);
+
+            // Update image with results
+            const processedImageData = new ImageData(
+              new Uint8ClampedArray(processedData),
+              canvas.width,
+              canvas.height
+            );
+            ctx.putImageData(processedImageData, 0, 0);
+
+            // Create URL for processed image
+            setProcessedImageUrl(canvas.toDataURL());
+          } finally {
+            setProcessing(false);
+          }
+        }
+
+        if (imageUrl) {
+          processImage();
+        }
+      }, [imageUrl]);
+
+      return (
+        <div className="image-processor">
+          <div className="images-container">
+            <div>
+              <h3>Original</h3>
+              <img src={imageUrl} alt="Original" />
+            </div>
+
+            <div>
+              <h3>Processed {processing && '(Processing...)'}</h3>
+              {processedImageUrl ? (
+                <img src={processedImageUrl} alt="Processed" />
+              ) : (
+                <div className="placeholder">
+                  {processing ? 'Processing...' : 'No image processed yet'}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+
+    Benefits of Rust + WebAssembly for frontend:
+
+    1. **Near-native code performance**: image processing, audio, video, physics simulations, AI
+
+    2. **Memory safety**: Rust ensures no memory errors like those in C/C++
+
+    3. **Interop with JavaScript**: easy integration with React, Vue, Angular applications
+
+    4. **Ideal for edge computing**: WASM code runs efficiently on Cloudflare Workers and other edge platforms
+
+    Companies like Figma, Adobe, and Vercel are using Rust + WASM to increase the performance of complex web applications.
+
+    [Rust WASM Documentation](https://rustwasm.github.io/book/)
+
+  </TIL.Item>
+
+</TIL.Items>
+
 <TIL.Items date="2025-04-12">
 
   <TIL.Item>
