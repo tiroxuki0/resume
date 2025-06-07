@@ -921,7 +921,7 @@ function ProjectDetail({ project }: ProjectDetailProps) {
 
 // Main component - đảm bảo hiển thị đúng các tab
 function ProjectsContents() {
-  const [currentState, setCurrentState] = useState<ProjectType>('wmember');
+  const [currentState, setCurrentState] = useState<ProjectType>('ecmp');
   const currentProject = projectData[currentState];
 
   // Nhóm các dự án theo loại để hiển thị trong sidebar
