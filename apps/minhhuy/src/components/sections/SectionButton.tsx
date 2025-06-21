@@ -32,7 +32,7 @@ export function SectionButton({
       {icon && (
         <span
           className={clsx(
-            'hidden w-24 shrink-0 justify-center text-center text-7xl font-black',
+            'w-18 hidden shrink-0 justify-center text-center text-7xl font-black',
             'xl:flex',
             active
               ? ['text-accent-600', 'dark:text-accent-400']

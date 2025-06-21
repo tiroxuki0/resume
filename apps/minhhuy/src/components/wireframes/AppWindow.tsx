@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useEffect, useRef } from 'react';
 
 import { SkeletonMd } from '@/components/wireframes/Skeletons';
 
@@ -17,8 +18,33 @@ function BrowserTab({
   isActive,
   onClick = () => {},
 }: BrowserTabProps) {
+  const tabRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isActive && tabRef.current) {
+      const container = tabRef.current.parentElement;
+      if (container) {
+        const tabRect = tabRef.current.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        // Check if tab is outside the visible area
+        if (
+          tabRect.left < containerRect.left ||
+          tabRect.right > containerRect.right
+        ) {
+          tabRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      }
+    }
+  }, [isActive]);
+
   return (
     <div
+      ref={tabRef}
       onClick={onClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -28,7 +54,7 @@ function BrowserTab({
       tabIndex={0}
       role="button"
       className={clsx(
-        'flex h-6 cursor-pointer items-center truncate rounded-lg',
+        'flex flex-shrink-0 cursor-pointer items-center truncate rounded-lg px-2 py-1',
         [
           isActive
             ? [
@@ -40,9 +66,9 @@ function BrowserTab({
       )}
       style={{ width: 200 }}
     >
-      <div className={clsx('flex w-full gap-2 px-2 text-xs')}>
+      <div className={clsx('flex w-full gap-2 text-xs')}>
         {icon}
-        <div className={clsx('flex-1 truncate')}>{title}</div>
+        <div className={clsx('flex flex-1 items-center truncate')}>{title}</div>
       </div>
     </div>
   );
@@ -105,7 +131,12 @@ function AppWindow({
               <SkeletonMd w={160} />
             </div>
             {isWithBrowserTabs && (
-              <div className={clsx('mt-2 flex gap-2 px-3')}>
+              <div
+                className={clsx(
+                  'mt-y flex w-full flex-nowrap gap-2 overflow-x-auto px-3'
+                )}
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
                 {browserTabs.map(({ icon, title, isActive, onClick }) => (
                   <BrowserTab
                     key={title}
