@@ -17,19 +17,23 @@ function CodeFooter({
   return (
     <div className={clsx('mdx-code__footer')}>
       {selected && (
-        <div className={clsx('mdx-code__footer-item')}>
+        <div className={clsx('mdx-code__footer-item', 'font-sans')}>
           Selected: {selected}
         </div>
       )}
       {language && (
-        <div className={clsx('mdx-code__footer-item')}>{language}</div>
+        <div className={clsx('mdx-code__footer-item', 'font-sans')}>
+          {language}
+        </div>
       )}
       {lines && (
-        <div className={clsx('mdx-code__footer-item hidden', 'sm:flex')}>
+        <div
+          className={clsx('mdx-code__footer-item hidden font-sans', 'sm:flex')}
+        >
           Lines: {lines}
         </div>
       )}
-      <div className={clsx('mdx-code__footer-item')}>UTF-8</div>
+      <div className={clsx('mdx-code__footer-item', 'font-sans')}>UTF-8</div>
     </div>
   );
 }
@@ -75,7 +79,7 @@ function Code({
           aria-label="Copy to Clipboard"
         >
           <div
-            className={clsx('mdx-code__copy-button-message', [
+            className={clsx('mdx-code__copy-button-message font-sans', [
               isCopied ? 'mdx-code__copy-button-message-copied' : '',
             ])}
           >
@@ -85,7 +89,12 @@ function Code({
         </button>
       )}
       <div className={clsx('mdx-code__content')}>
-        <pre ref={codeRef}>{children}</pre>
+        <pre
+          ref={codeRef}
+          style={{ fontFamily: 'var(--font-sans), system-ui, sans-serif' }}
+        >
+          {children}
+        </pre>
       </div>
       {withFooter && (
         <CodeFooter lines={lines} selected={selected} language={language} />

@@ -19,6 +19,124 @@ type ProjectType =
   | 'wstore-admin'
   | 'ecmp';
 
+function getColorClasses(color: string) {
+  const colorMap = {
+    purple: {
+      border: 'border-purple-200 dark:border-purple-800/40',
+      bg: 'bg-white dark:bg-gray-800',
+      text: 'text-purple-700 dark:text-purple-300',
+      hover: 'hover:border-purple-300',
+      gradient:
+        'from-purple-400 to-violet-600 dark:from-purple-500 dark:to-violet-700',
+      shadow: 'shadow-purple-500/20 dark:shadow-purple-800/30',
+      button: 'bg-purple-500 hover:bg-purple-600 focus:ring-purple-500/50',
+      techTag:
+        'border-purple-200 bg-white text-purple-700 hover:border-purple-300 dark:border-purple-800/40 dark:bg-gray-800 dark:text-purple-300 bg-purple-100/80 dark:bg-purple-900/50',
+      sectionBorder: 'border-purple-100 dark:border-purple-900/50',
+      sectionBg: 'bg-purple-50/50 dark:bg-purple-950/20',
+      cardBorder: 'border-purple-200/60 dark:border-purple-800/30',
+      cardBg: 'bg-purple-50/30 dark:bg-purple-950/10',
+      iconGradient:
+        'from-purple-400 to-violet-600 dark:from-purple-500 dark:to-violet-700',
+      iconShadow: 'shadow-purple-500/20 dark:shadow-purple-800/30',
+      visitButton:
+        'from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 shadow-purple-900/20',
+      bgGradient:
+        'from-white to-purple-50 dark:from-gray-800 dark:to-purple-900/20',
+      bgDecor1: 'bg-purple-100 dark:bg-purple-700',
+      bgDecor2: 'bg-violet-100 dark:bg-violet-700',
+      bgDecor3: 'bg-indigo-100 dark:bg-indigo-700',
+      headerGradient:
+        'from-purple-500 to-violet-600 shadow-purple-500/20 dark:shadow-purple-800/30',
+    },
+    slate: {
+      border: 'border-slate-200 dark:border-slate-800/40',
+      bg: 'bg-white dark:bg-gray-800',
+      text: 'text-slate-700 dark:text-slate-300',
+      hover: 'hover:border-slate-300',
+      gradient:
+        'from-slate-400 to-blue-600 dark:from-slate-500 dark:to-blue-700',
+      shadow: 'shadow-slate-500/20 dark:shadow-slate-800/30',
+      button: 'bg-slate-500 hover:bg-slate-600 focus:ring-slate-500/50',
+      techTag:
+        'border-slate-200 bg-white text-slate-700 hover:border-slate-300 dark:border-slate-800/40 dark:bg-gray-800 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-900/50',
+      sectionBorder: 'border-slate-100 dark:border-slate-900/50',
+      sectionBg: 'bg-slate-50/50 dark:bg-slate-950/20',
+      cardBorder: 'border-slate-200/60 dark:border-slate-800/30',
+      cardBg: 'bg-slate-50/30 dark:bg-slate-950/10',
+      iconGradient:
+        'from-slate-400 to-blue-600 dark:from-slate-500 dark:to-blue-700',
+      iconShadow: 'shadow-slate-500/20 dark:shadow-slate-800/30',
+      visitButton:
+        'from-slate-600 to-blue-600 hover:from-slate-700 hover:to-blue-700 shadow-slate-900/20',
+      bgGradient:
+        'from-white to-slate-50 dark:from-gray-800 dark:to-slate-900/20',
+      bgDecor1: 'bg-slate-100 dark:bg-slate-700',
+      bgDecor2: 'bg-blue-100 dark:bg-blue-700',
+      bgDecor3: 'bg-indigo-100 dark:bg-indigo-700',
+      headerGradient:
+        'from-slate-500 to-blue-600 shadow-slate-500/20 dark:shadow-slate-800/30',
+    },
+    blue: {
+      border: 'border-blue-200 dark:border-blue-800/40',
+      bg: 'bg-white dark:bg-gray-800',
+      text: 'text-blue-700 dark:text-blue-300',
+      hover: 'hover:border-blue-300',
+      gradient: 'from-blue-400 to-sky-600 dark:from-blue-500 dark:to-sky-700',
+      shadow: 'shadow-blue-500/20 dark:shadow-blue-800/30',
+      button: 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-500/50',
+      techTag:
+        'border-blue-200 bg-white text-blue-700 hover:border-blue-300 dark:border-blue-800/40 dark:bg-gray-800 dark:text-blue-300 bg-blue-100/80 dark:bg-blue-900/50',
+      sectionBorder: 'border-blue-100 dark:border-blue-900/50',
+      sectionBg: 'bg-blue-50/50 dark:bg-blue-950/20',
+      cardBorder: 'border-blue-200/60 dark:border-blue-800/30',
+      cardBg: 'bg-blue-50/30 dark:bg-blue-950/10',
+      iconGradient:
+        'from-blue-400 to-sky-600 dark:from-blue-500 dark:to-sky-700',
+      iconShadow: 'shadow-blue-500/20 dark:shadow-blue-800/30',
+      visitButton:
+        'from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 shadow-blue-900/20',
+      bgGradient:
+        'from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20',
+      bgDecor1: 'bg-blue-100 dark:bg-blue-700',
+      bgDecor2: 'bg-sky-100 dark:bg-sky-700',
+      bgDecor3: 'bg-cyan-100 dark:bg-cyan-700',
+      headerGradient:
+        'from-blue-500 to-sky-600 shadow-blue-500/20 dark:shadow-blue-800/30',
+    },
+    indigo: {
+      border: 'border-indigo-200 dark:border-indigo-800/40',
+      bg: 'bg-white dark:bg-gray-800',
+      text: 'text-indigo-700 dark:text-indigo-300',
+      hover: 'hover:border-indigo-300',
+      gradient:
+        'from-indigo-400 to-blue-600 dark:from-indigo-500 dark:to-blue-700',
+      shadow: 'shadow-indigo-500/20 dark:shadow-indigo-800/30',
+      button: 'bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-500/50',
+      techTag:
+        'border-indigo-200 bg-white text-indigo-700 hover:border-indigo-300 dark:border-indigo-800/40 dark:bg-gray-800 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-900/50',
+      sectionBorder: 'border-indigo-100 dark:border-indigo-900/50',
+      sectionBg: 'bg-indigo-50/50 dark:bg-indigo-950/20',
+      cardBorder: 'border-indigo-200/60 dark:border-indigo-800/30',
+      cardBg: 'bg-indigo-50/30 dark:bg-indigo-950/10',
+      iconGradient:
+        'from-indigo-400 to-blue-600 dark:from-indigo-500 dark:to-blue-700',
+      iconShadow: 'shadow-indigo-500/20 dark:shadow-indigo-800/30',
+      visitButton:
+        'from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 shadow-indigo-900/20',
+      bgGradient:
+        'from-white to-indigo-50 dark:from-gray-800 dark:to-indigo-900/20',
+      bgDecor1: 'bg-indigo-100 dark:bg-indigo-700',
+      bgDecor2: 'bg-blue-100 dark:bg-blue-700',
+      bgDecor3: 'bg-slate-100 dark:bg-slate-700',
+      headerGradient:
+        'from-indigo-500 to-blue-600 shadow-indigo-500/20 dark:shadow-indigo-800/30',
+    },
+  };
+
+  return colorMap[color as keyof typeof colorMap] || colorMap.blue;
+}
+
 const projectData = {
   ecmp: {
     title: 'Enterprise Cloud Management Platform (ECMP)',
@@ -624,125 +742,6 @@ type VisitSiteButtonProps = {
   color?: string;
 };
 
-// Helper function cho color mapping với tất cả các class cần thiết
-function getColorClasses(color: string) {
-  const colorMap = {
-    purple: {
-      border: 'border-purple-200 dark:border-purple-800/40',
-      bg: 'bg-white dark:bg-gray-800',
-      text: 'text-purple-700 dark:text-purple-300',
-      hover: 'hover:border-purple-300',
-      gradient:
-        'from-purple-400 to-violet-600 dark:from-purple-500 dark:to-violet-700',
-      shadow: 'shadow-purple-500/20 dark:shadow-purple-800/30',
-      button: 'bg-purple-500 hover:bg-purple-600 focus:ring-purple-500/50',
-      techTag:
-        'border-purple-200 bg-white text-purple-700 hover:border-purple-300 dark:border-purple-800/40 dark:bg-gray-800 dark:text-purple-300 bg-purple-100/80 dark:bg-purple-900/50',
-      sectionBorder: 'border-purple-100 dark:border-purple-900/50',
-      sectionBg: 'bg-purple-50/50 dark:bg-purple-950/20',
-      cardBorder: 'border-purple-200/60 dark:border-purple-800/30',
-      cardBg: 'bg-purple-50/30 dark:bg-purple-950/10',
-      iconGradient:
-        'from-purple-400 to-violet-600 dark:from-purple-500 dark:to-violet-700',
-      iconShadow: 'shadow-purple-500/20 dark:shadow-purple-800/30',
-      visitButton:
-        'from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 shadow-purple-900/20',
-      bgGradient:
-        'from-white to-purple-50 dark:from-gray-800 dark:to-purple-900/20',
-      bgDecor1: 'bg-purple-100 dark:bg-purple-700',
-      bgDecor2: 'bg-violet-100 dark:bg-violet-700',
-      bgDecor3: 'bg-indigo-100 dark:bg-indigo-700',
-      headerGradient:
-        'from-purple-500 to-violet-600 shadow-purple-500/20 dark:shadow-purple-800/30',
-    },
-    slate: {
-      border: 'border-slate-200 dark:border-slate-800/40',
-      bg: 'bg-white dark:bg-gray-800',
-      text: 'text-slate-700 dark:text-slate-300',
-      hover: 'hover:border-slate-300',
-      gradient:
-        'from-slate-400 to-blue-600 dark:from-slate-500 dark:to-blue-700',
-      shadow: 'shadow-slate-500/20 dark:shadow-slate-800/30',
-      button: 'bg-slate-500 hover:bg-slate-600 focus:ring-slate-500/50',
-      techTag:
-        'border-slate-200 bg-white text-slate-700 hover:border-slate-300 dark:border-slate-800/40 dark:bg-gray-800 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-900/50',
-      sectionBorder: 'border-slate-100 dark:border-slate-900/50',
-      sectionBg: 'bg-slate-50/50 dark:bg-slate-950/20',
-      cardBorder: 'border-slate-200/60 dark:border-slate-800/30',
-      cardBg: 'bg-slate-50/30 dark:bg-slate-950/10',
-      iconGradient:
-        'from-slate-400 to-blue-600 dark:from-slate-500 dark:to-blue-700',
-      iconShadow: 'shadow-slate-500/20 dark:shadow-slate-800/30',
-      visitButton:
-        'from-slate-600 to-blue-600 hover:from-slate-700 hover:to-blue-700 shadow-slate-900/20',
-      bgGradient:
-        'from-white to-slate-50 dark:from-gray-800 dark:to-slate-900/20',
-      bgDecor1: 'bg-slate-100 dark:bg-slate-700',
-      bgDecor2: 'bg-blue-100 dark:bg-blue-700',
-      bgDecor3: 'bg-indigo-100 dark:bg-indigo-700',
-      headerGradient:
-        'from-slate-500 to-blue-600 shadow-slate-500/20 dark:shadow-slate-800/30',
-    },
-    blue: {
-      border: 'border-blue-200 dark:border-blue-800/40',
-      bg: 'bg-white dark:bg-gray-800',
-      text: 'text-blue-700 dark:text-blue-300',
-      hover: 'hover:border-blue-300',
-      gradient: 'from-blue-400 to-sky-600 dark:from-blue-500 dark:to-sky-700',
-      shadow: 'shadow-blue-500/20 dark:shadow-blue-800/30',
-      button: 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-500/50',
-      techTag:
-        'border-blue-200 bg-white text-blue-700 hover:border-blue-300 dark:border-blue-800/40 dark:bg-gray-800 dark:text-blue-300 bg-blue-100/80 dark:bg-blue-900/50',
-      sectionBorder: 'border-blue-100 dark:border-blue-900/50',
-      sectionBg: 'bg-blue-50/50 dark:bg-blue-950/20',
-      cardBorder: 'border-blue-200/60 dark:border-blue-800/30',
-      cardBg: 'bg-blue-50/30 dark:bg-blue-950/10',
-      iconGradient:
-        'from-blue-400 to-sky-600 dark:from-blue-500 dark:to-sky-700',
-      iconShadow: 'shadow-blue-500/20 dark:shadow-blue-800/30',
-      visitButton:
-        'from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 shadow-blue-900/20',
-      bgGradient:
-        'from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20',
-      bgDecor1: 'bg-blue-100 dark:bg-blue-700',
-      bgDecor2: 'bg-sky-100 dark:bg-sky-700',
-      bgDecor3: 'bg-cyan-100 dark:bg-cyan-700',
-      headerGradient:
-        'from-blue-500 to-sky-600 shadow-blue-500/20 dark:shadow-blue-800/30',
-    },
-    indigo: {
-      border: 'border-indigo-200 dark:border-indigo-800/40',
-      bg: 'bg-white dark:bg-gray-800',
-      text: 'text-indigo-700 dark:text-indigo-300',
-      hover: 'hover:border-indigo-300',
-      gradient:
-        'from-indigo-400 to-blue-600 dark:from-indigo-500 dark:to-blue-700',
-      shadow: 'shadow-indigo-500/20 dark:shadow-indigo-800/30',
-      button: 'bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-500/50',
-      techTag:
-        'border-indigo-200 bg-white text-indigo-700 hover:border-indigo-300 dark:border-indigo-800/40 dark:bg-gray-800 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-900/50',
-      sectionBorder: 'border-indigo-100 dark:border-indigo-900/50',
-      sectionBg: 'bg-indigo-50/50 dark:bg-indigo-950/20',
-      cardBorder: 'border-indigo-200/60 dark:border-indigo-800/30',
-      cardBg: 'bg-indigo-50/30 dark:bg-indigo-950/10',
-      iconGradient:
-        'from-indigo-400 to-blue-600 dark:from-indigo-500 dark:to-blue-700',
-      iconShadow: 'shadow-indigo-500/20 dark:shadow-indigo-800/30',
-      visitButton:
-        'from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 shadow-indigo-900/20',
-      bgGradient:
-        'from-white to-indigo-50 dark:from-gray-800 dark:to-indigo-900/20',
-      bgDecor1: 'bg-indigo-100 dark:bg-indigo-700',
-      bgDecor2: 'bg-blue-100 dark:bg-blue-700',
-      bgDecor3: 'bg-slate-100 dark:bg-slate-700',
-      headerGradient:
-        'from-indigo-500 to-blue-600 shadow-indigo-500/20 dark:shadow-indigo-800/30',
-    },
-  };
-
-  return colorMap[color as keyof typeof colorMap] || colorMap.blue;
-}
-
 // Visit Site Button Component
 function VisitSiteButton({ url = '', color = 'purple' }: VisitSiteButtonProps) {
   if (!url) return null;
@@ -884,7 +883,7 @@ function ProjectDetail({ project }: ProjectDetailProps) {
       {/* Header */}
       <div className="relative mb-6 flex items-center">
         <div>
-          <h2 className={`text-2xl font-bold text-black dark:text-white`}>
+          <h2 className="text-2xl font-bold text-black dark:text-white">
             {title}
           </h2>
           <p className={`text-sm font-medium ${colors.text}`}>{subtitle}</p>

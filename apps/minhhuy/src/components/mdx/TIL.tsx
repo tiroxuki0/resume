@@ -12,6 +12,7 @@ export function Do({ children = null }: PropsWithChildren) {
       <div
         className={clsx(
           'relative flex items-start gap-2 pb-2 text-sm font-semibold text-slate-700',
+          'font-sans',
           'dark:text-slate-300'
         )}
       >
@@ -39,6 +40,7 @@ export function Dont({ children = null }: PropsWithChildren) {
       <div
         className={clsx(
           'relative flex items-start gap-2 pb-2 text-sm font-semibold text-slate-700',
+          'font-sans',
           'dark:text-slate-300'
         )}
       >
@@ -83,6 +85,7 @@ export function ItemTag({ children = null }: PropsWithChildren) {
     <div
       className={clsx(
         'bg-accent-600/[0.08] text-accent-600 inline-flex h-6 items-center gap-1 rounded-full px-2 text-[13px] font-medium',
+        'font-sans',
         'dark:text-accent-400 dark:dark:bg-accent-400/10 dark:font-normal'
       )}
     >
@@ -142,6 +145,7 @@ export function Items({
           <div
             className={clsx(
               'font-mono font-bold text-slate-700',
+              'font-sans',
               'md:text-right',
               'dark:text-slate-300'
             )}

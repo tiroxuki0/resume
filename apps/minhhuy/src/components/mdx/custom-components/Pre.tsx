@@ -50,14 +50,19 @@ export function Pre({
   }
 
   return (
-    <Code
-      withFooter={withFooter}
-      withCopyButton={copy}
-      lines={Number(lines)}
-      selected={selected}
-      language={language}
+    <div
+      className="font-sans"
+      style={{ fontFamily: 'var(--font-sans) !important' }}
     >
-      {children}
-    </Code>
+      <Code
+        withFooter={withFooter}
+        withCopyButton={copy}
+        lines={Number(lines)}
+        selected={selected}
+        language={language}
+      >
+        {children}
+      </Code>
+    </div>
   );
 }
